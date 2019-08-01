@@ -1,3 +1,7 @@
+.tmp
+.DS_Store
+.AppleDouble
+
 # Logs
 logs
 *.log
