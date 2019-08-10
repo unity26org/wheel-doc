@@ -1,0 +1,429 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>wheel doc</title>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="node_modules/highlightjs/styles/railscasts.css" type="text/css" />
+    <!-- endbuild -->
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <!-- build:js scripts/modernizr.js -->
+    <script src="scripts/modernizr.js"></script>
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if IE]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills float-right">
+          <li class="nav-item">
+            <a href="/" class="nav-link">Home</a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Index</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="padding:10px;15px;10px;15px;">
+              <div class="row" style="width:700px;">
+                <div class="col">
+                  <h2>Install & Usage</h2>
+                  <ul>
+                    <li><a href="/install-usage.html#install">Install</a></li>
+                    <li><a href="/install-usage.html#usage">Usage</a></li>
+                  </ul>
+
+                  <h2>Default Resources</h2>
+                  <ul>
+                    <li><a href="/default-resources.html#sessions">Sessions</a></li>
+                    <li><a href="/default-resources.html#myself">Myself</a></li>
+                    <li><a href="/default-resources.html#users">Users</a></li>
+                  </ul>
+
+                  <h2>Internals</h2>
+                  <ul>
+                    <li><a href="/internals.html#model">Model</a></li>
+                    <li><a href="/internals.html#view">View</a></li>
+                    <li><a href="/internals.html#handlers">Handlers (Controllers)</a></li>
+                  </ul>
+
+                </div>
+
+                <div class="col">
+                  <h2>Features</h2>
+                  <ul>
+                    <li><a href="/features.html#mvc">MVC</a></li>
+                    <li><a href="/features.html#restful">RESTful</a></li>
+                    <li><a href="/features.html#jwt">JWT</a></li>
+                    <li><a href="/features.html#session-control">Session Control</a></li>
+                    <li><a href="/features.html#middleware">Middleware</a></li>
+                    <li><a href="/features.html#authorization">Authorization</a></li>
+                    <li><a href="/features.html#users-management">Users management</a></li>
+                    <li><a href="/features.html#orm">ORM</a></li>
+                    <li><a href="/features.html#migration">Migration</a></li>
+                    <li><a href="/features.html#search-engine">Search engine</a></li>
+                    <li><a href="/features.html#pagination">Pagination</a></li>
+                    <li><a href="/features.html#i18n">I18n</a></li>
+                    <li><a href="/features.html#send-mail">Send mail</a></li>
+                    <li><a href="/features.html#log">Log</a></li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="/contribute" class="nav-link">Contribute</a>
+          </li>
+        </ul>
+        <h3 class="text-muted">Wheel Doc</h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1 class="display-3">Install & Usage</h1>
+        <ul style="text-align:left;">
+          <li>
+            <a href="#install">Install</a>
+            <ul>
+              <li><a href="#install-go">Go</a></li>
+              <li><a href="#install-dependences">Dependences</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#usage">Usage</a>
+            <ul>
+              <li><a href="#usage-creating-new-apis">Creating New APIs</a></li>
+              <li><a href="#usage-configure">Configure</a></li>
+              <li><a href="#usage-runnning">Runnning</a></li>
+              <li><a href="#usage-file-system">File System</a></li>
+              <li><a href="#usage-adding-new-resources">Adding New Resources</a></li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-12">
+          
+          <h4 id="install">Install</h4>
+          <h5 id="install-go">1. Go</h5>
+          <p style="text-align:justify">
+          Check the <a href="https://golang.org/doc/install" target="_blank">Go documentation</a> to download and install.
+          </p>
+          
+          <h5 id="install-dependences">2. Dependences</h5>
+          <pre><code class="nohighlight">
+$> go get github.com/iancoleman/strcase
+$> go get github.com/jinzhu/inflection              
+          </code></pre>
+          
+          <h5>3. Wheel</h5>
+          <pre><code class="nohighlight">
+$> go get github.com/unity26org/wheel
+$> cd GOPATH/src/github.com/unity26org/wheel
+$> go build -o wheel main.go 
+$> sudo mv wheel /usr/bin
+          </code></pre>
+          
+          <div class="alert alert-warning" role="alert" style="text-align:justify">
+            In the example above, <b>GOPATH</b> is where the Go packages and sources are installed. The executable file <b>wheel</b> was moved to <i>/usr/bin</i>. But feel free to set it up to any directory you want. Just add the path to your <i>.profile</i>, as you can see below:
+          </div>
+
+          <pre><code class="nohighlight">
+export PATH=$PATH:YOUR_DESIRED_PATH
+          </code></pre>
+          
+          <!-- Usage -->
+          <h4 id="usage">Usage</h4>
+          <p style="text-align:justify">Wheel has only two options: <i>new</i>, to create new APIs, and <i>generate</i>, to add new resources to your API.</p>
+          
+          <p style="text-align:justify">Check <i>help</i> for more details.</p>
+
+          <pre><code class="nohighlight">
+wheel --help
+          </code></pre>
+          
+          <h5 id="usage-creating-new-apis">1. Creating New APIs</h5>
+
+          <p style="text-align:justify">Let's create an API for a Blog!</p>
+          
+          <p style="text-align:justify">In this example I am assuming that I will be using the path <i>github.com/account_name/blog</i>. Where <i>github.com</i> means the code repository system, <i>account_name</i> is a fake name for an account on github.com and <i>blog</i> is the name of the application, effectively.</p>
+
+          <pre><code class="nohighlight">
+wheel new github.com/account_name/blog
+          </code></pre>
+
+          <p style="text-align:justify">It will output something like this:</p>
+
+          <pre><code class="nohighlight">
+"Go" seems installed
+Checking dependences...
+         ...
+Generating new app...
+         created: GOPATH/src/github.com/account_name/blog
+         ...
+
+Your RESTful API was successfully created!
+
+Change to the root directory using the command line below:
+cd GOPATH/src/github.com/account_name/blog
+
+Set up your database connection modifying the file config/database.yml
+
+For more details call help:
+go run main.go --help
+          </code></pre>
+
+          <div class="alert alert-warning" role="alert" style="text-align:justify">
+            <p style="text-align:justify">Don't forget to go to the directory <i>GOPATH/src/github.com/account_name/blog</i>.</p>
+            
+            <p style="text-align:justify">And remember: <b>GOPATH</b> is where Go packages and sources are installed.</p>
+          </div>
+
+          <p style="text-align:justify">Once you have created a new project, Wheel gives, by default, RESTful resources for session control, user management and more. To check these default resources click <a href="/default-resources.html">here</a>.</p>
+
+          <h5 id="usage-configure">2. Configure</h5>
+
+          <p style="text-align:justify"><b>Database</b></p>
+
+          <p style="text-align:justify">Currently, Wheel has support only for Postgresql. Edit <i>config/database.yml</i> and set up your database connection.</p>
+
+          <p style="text-align:justify"><b>Email</b></p>
+
+          <p style="text-align:justify">Edit <i>config/email.yml</i> and set up with your send mail account.</p>
+
+          <p style="text-align:justify"><b>Application</b></p>
+
+          <p style="text-align:justify">Edit <i>config/app.yml</i> and set the following options:</p>
+
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Definition</th>
+              </tr>              
+            </thead>
+            <tbody>
+              <tr>
+                <td><i>app_name</i></td>
+                <td>Your app name</td>
+              </tr>
+              <tr>
+                <td><i>app_repository</i></td>
+                <td>Repository name</td>
+              </tr>
+              <tr>
+                <td><i>frontend_base_url</i></td>
+                <td>URL to be used on your frontend</td>
+              </tr>
+              <tr>
+                <td><i>secret_key</i></td>
+                <td>Key to encrypt passwords on database</td>
+              </tr>
+              <tr>
+                <td><i>reset_password_expiration_seconds</i></td>
+                <td>Expiration time just after password reset functionality is requested</td>
+              </tr>
+              <tr>
+                <td><i>token_expiration_seconds</i></td>
+                <td>Access token expiration time just after sign in</td>
+              </tr>
+              <tr>
+                <td><i>locales</i></td>
+                <td>List of available locales</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p style="text-align:justify"><b>Locales</b></p>
+
+          <p style="text-align:justify">Available locales files that contains words and phrases for internacionalization. You can add your own locales files, but remember to add to <i>config/app.yml</i> configuration file first.</p>
+
+          <h5 id="usage-running">3. Running</h5>
+          
+          <div class="alert alert-warning" role="alert" style="text-align:justify">
+            Before running you must be sure your database schema is up to date, just run the <i>migrate</i> mode before:
+          </div>
+
+          <pre><code class="nohighlight">
+$> go run main.go -mode=migrate
+          </code></pre>
+
+          <p style="text-align:justify">To learn more about the migration functionality check its section clicking <a href="/features.html#migration">here</a>.</p>
+
+          <pre><code class="nohighlight">
+$> go run main.go
+          </code></pre>
+          
+          <p style="text-align:justify">Now go to http://localhost:8081 and you'll see:</p>
+
+          <pre><code class="json">
+{
+  system_message: {
+    type: "notice",
+    content: "Yeah! Wheel is working!"
+  }
+}
+          </code></pre>
+
+          <h5 id="usage-file-system">4. File System</h5>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Directory/File</th>
+                <th>Definition</th>
+              </tr>              
+            </thead>
+            <tbody>
+              <tr>
+                <td><i>app/</i></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><i>commons/</i></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><i>config/</i></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><i>db/</i></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><i>main.go</i></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><i>routes/</i></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h5 id="usage-adding-new-resources">5. Adding New Resources</h5>
+
+          <p style="text-align:justify">Based on the Blog's API above, let's create a new CRUD.</p>
+
+          <div class="alert alert-warning" role="alert" style="text-align:justify">
+            Don't forget to call the directory where the application were generated.
+          </div>
+          
+          <pre><code class="nohighlight">
+$> wheel g scaffold post title:string description:text published:bool rate:decimal views:integer user:references
+          </code></pre>
+          
+          <p style="text-align:justify">And it will return something like that:</p>
+          
+          <pre><code class="nohighlight">
+"Go" seems installed
+Checking dependences...
+         ...
+Generating new CRUD...
+         created: app/post/post_model.go
+         created: app/post/post_view.go
+         created: db/entities/post_entity.go
+         created: app/handlers/post_handler.go
+         updated: routes/routes.go
+         updated: db/schema/migrate.go
+         updated: routes/authorize.go
+          </code></pre>
+
+          <p style="text-align:justify">Run the migration mode to update the database schema.</p>
+
+          <pre><code class="nohighlight">
+$> go run main.go -mode=migrate
+          </code></pre>
+
+          
+          <p style="text-align:justify">Because of the reference of <i>user</i>, when the new <i>post</i> is created we need to specify the user. At this example, let's specify the current session user adding the line <i>newPost.UserID, _ = SessionCheck(r.Header.Get("token"))</i> at file <i>app/handlers/post_handler.go</i> inside the function <i>PostCreate</i>.</p>
+
+
+          <pre><code class="go">
+func PostCreate(w http.ResponseWriter, r *http.Request) {
+	var newPost = entities.Post{}
+
+	log.Info.Println("Handler: PostCreate")
+	w.Header().Set("Content-Type", "application/json")
+
+	postSetParams(&newPost, r)
+	newPost.UserID, _ = SessionCheck(r.Header.Get("token")) // Add this line at this position
+
+	valid, errs := post.Create(&newPost)
+	log.Debug.Println(errs)
+
+	if valid {
+		json.NewEncoder(w).Encode(post.SuccessfullySavedJson{SystemMessage: view.SetSystemMessage("notice", "post was successfully created"), Post: post.SetJson(newPost)})
+	} else {
+		json.NewEncoder(w).Encode(view.SetErrorMessage("alert", "post was not created", errs))
+	}
+}
+          </code></pre>
+          
+          <p style="text-align:justify"><i>SessionCheck(token string)</i> extracts the token informations, processes them and returns the <i>User ID</i>. Check the <a href="/internals.html#handlers">internal section</a> for more details.</p>
+
+          <p style="text-align:justify">When generates a new CRUD, Wheel adds to file <i>routes/routes.go</i> the <i>posts</i> RESTful interfaces.</p>
+          
+          <pre><code class="go">
+router.HandleFunc("/posts", handlers.PostList).Methods("GET")
+router.HandleFunc("/posts/{id}", handlers.PostShow).Methods("GET")
+router.HandleFunc("/posts", handlers.PostCreate).Methods("POST")
+router.HandleFunc("/posts/{id}", handlers.PostUpdate).Methods("PUT")
+router.HandleFunc("/posts/{id}", handlers.PostDestroy).Methods("DELETE")
+          </code></pre>
+          
+          <p style="text-align:justify">Check the <a href="/features.html#routes">routes feature section</a> for more details.</p>
+
+
+          <p style="text-align:justify">Also, Wheel adds to file <i>routes/authorize.go</i> the permissions for <i>posts</i> resources.</p>
+          
+          <pre><code class="go">
+Permissions = append(Permissions,
+Permission{
+	UrlRegexp: regexp.MustCompile(`\A\/posts(\/){0,1}.*\z`),
+	Methods:   []string{"GET", "POST", "DELETE", "PUT"},
+	UserRoles: []string{"public", "signed_in", "admin"},
+})
+          </code></pre>
+          
+          <p style="text-align:justify">Check the <a href="/features.html#routes">authorization feature section</a> for more details.</p>
+          
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>Thanks from the Wheel Core Team</p>
+      </div>
+    </div>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='https://www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
+    </script>
+    <!-- build:js scripts/vendor.js -->
+    <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/node_modules/popper.js/dist/umd/popper.js"></script>
+    <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/node_modules/highlightjs/highlight.pack.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <!-- endbuild -->
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>
