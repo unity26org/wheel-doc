@@ -101,3 +101,13 @@ pre > code.nohighlight {
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
+pre.terminal {  
+  display: block;
+  border: 1px solid #dee2e6;
+  background-color: #232323;
+  padding-top: 20px;
+  padding-left: 15px;
+  width: 100%;
+  color: #e6e1dc;
+}
+

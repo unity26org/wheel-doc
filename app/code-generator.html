@@ -1,0 +1,553 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>wheel doc</title>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="node_modules/highlightjs/styles/railscasts.css" type="text/css" />
+    <!-- endbuild -->
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <!-- build:js scripts/modernizr.js -->
+    <script src="scripts/modernizr.js"></script>
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if IE]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills float-right">
+          <li class="nav-item">
+            <a href="/" class="nav-link">Home</a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Index</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="padding:10px;15px;10px;15px;">
+              <div class="row" style="width:700px;">
+                <div class="col">
+                  <h2>Getting Started</h2>
+                  <ul>
+                    <li><a href="/getting-started.html#install">Install</a></li>
+                    <li><a href="/getting-started.html#usage">Usage</a></li>
+                  </ul>
+
+                  <h2>Default Resources</h2>
+                  <ul>
+                    <li><a href="/default-resources.html#overview">Overview</a></li>
+                    <li><a href="/default-resources.html#sessions">Sessions</a></li>
+                    <li><a href="/default-resources.html#myself">Myself</a></li>
+                    <li><a href="/default-resources.html#users">Users</a></li>
+                  </ul>
+
+                  <h2>Code Generator</h2>
+                  <ul>
+                    <li><a href="/code-generator.html#overview">Overview</a></li>
+                    <li><a href="/code-generator.html#the-new-command">The "new" Command</a></li>
+                    <li><a href="/code-generator.html#the-generate-command">The "generate" Command</a></li>
+                  </ul>
+
+                  <h2>Internals</h2>
+                  <ul>
+                    <li><a href="/internals.html#model">Model</a></li>
+                    <li><a href="/internals.html#view">View</a></li>
+                    <li><a href="/internals.html#handlers">Handlers (Controllers)</a></li>
+                  </ul>
+
+                </div>
+
+                <div class="col">
+                  <h2>Features</h2>
+                  <ul>
+                    <li><a href="/features.html#mvc">MVC</a></li>
+                    <li><a href="/features.html#restful">RESTful</a></li>
+                    <li><a href="/features.html#jwt">JWT</a></li>
+                    <li><a href="/features.html#session-control">Session Control</a></li>
+                    <li><a href="/features.html#middleware">Middleware</a></li>
+                    <li><a href="/features.html#authorization">Authorization</a></li>
+                    <li><a href="/features.html#users-management">Users management</a></li>
+                    <li><a href="/features.html#orm">ORM</a></li>
+                    <li><a href="/features.html#migration">Migration</a></li>
+                    <li><a href="/features.html#search-engine">Search engine</a></li>
+                    <li><a href="/features.html#pagination">Pagination</a></li>
+                    <li><a href="/features.html#i18n">I18n</a></li>
+                    <li><a href="/features.html#send-mail">Send mail</a></li>
+                    <li><a href="/features.html#log">Log</a></li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="/contribute" class="nav-link">Contribute</a>
+          </li>
+        </ul>
+        <h3 class="text-muted">Wheel Doc</h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1 class="display-3">Code Generator</h1>
+
+        <ol class="page-menu" style="text-align:left;">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#the-new-command">The "new" command</a></li>
+          <li>
+            <a href="#the-generate-command">The "generate" command</a>
+            <ul style="text-align:left;">
+              <li><a href="#scaffold">Scaffold</a></li>
+              <li><a href="#model">Model</a></li>
+              <li><a href="#entity">Entity</a></li>
+              <li><a href="#handler">Handler</a></li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-12">
+
+          <h3 class="main-header" id="overview">1&nbsp;&nbsp;Overview</h3>
+
+          <p style="text-align:justify">
+            If you have already read the <a href="getting-started.html">Getting Started</a> section, you may noticed that we used many command lines to generate code. In this section we are going deep in the <i>code generator</i> and you will find out how easy and productive is working with Wheel to build and mantain your project.
+          </p>
+
+          <p style="text-align:justify">
+           Let's check the Wheel's help.
+          </p>
+          
+          <pre><code class="nohighlight">
+$> wheel --help
+          </code></pre>
+
+          <pre class="terminal">
+Usage:
+  wheel new APP_PATH [options]             # Creates new app
+
+  wheel generate SUBJECT NAME ATTRIBUTES   # Adds new CRUD to an existing app. 
+                                           # SUBJECT: scaffold/model/entity/handler. 
+                                           # NAME: name of the model, entity or handler
+                                           # ATTRIBUTES: when not a handler, is a pair of column name
+                                           # and column type separated by ":" i.e. description:string
+                                           # Available types are: 
+                                           # string/text/integer/decimal/datetime/bool/references.
+                                           # When a handler "attributes" are functions inside handler.
+                                           
+Options:
+  -R, [--skip-default-resources]           # Skip default resources
+  -G, [--skip-git]                         # Skip .gitignore file
+
+More:
+  -h, [--help]                             # Show this help message and quit
+  -v, [--version]                          # Show Wheel version number and quit           
+          </code></pre>
+
+          <p style="text-align:justify">
+           As you can see, Wheel has basically two commands: <i>new</i> and <i>generate</i>.
+          </p>
+
+          <h3 class="main-header" id="the-new-command">2&nbsp;&nbsp;The "new" Command</h3>
+
+          <p style="text-align:justify">
+           The <i>new</i> command generates a new project. The <i>APP_PATH</i> is the directory path where your application will be stored inside the <i>GOPATH</i>. Let's imagine your <i>GOPATH</i> is <i>/home/your_user/go/src</i> and the <i>APP_PATH</i> is <i>github.com/your_account/store</i>. It will generate the project inside <i>/home/your_user/go/src/github.com/your_account/store</i> path. The name of the application is always the last part of <i>APP_PATH</i>, at this example is <i>store</i>.
+          </p>
+
+          <p style="text-align:justify">
+            Try it:
+          </p>
+          
+          <pre><code class="nohighlight">
+$> wheel new github.com/your_account/store
+          </code></pre>
+
+          <pre class="terminal">
+"Go" seems installed
+Checking dependences...
+         package github.com/jinzhu/gorm was found
+         package gopkg.in/yaml.v2 was found
+         package github.com/gorilla/mux was found
+         package github.com/dgrijalva/jwt-go was found
+         package github.com/satori/go.uuid was found
+         package github.com/lib/pq was found
+         package golang.org/x/crypto/bcrypt was found
+Generating new app...
+         created: /home/your_user/go/src/github.com/your_account/store
+         created: /home/your_user/go/src/github.com/your_account/store/app/handlers/myself_handler.go
+         created: /home/your_user/go/src/github.com/your_account/store/app/handlers/session_handler.go
+         created: /home/your_user/go/src/github.com/your_account/store/app/handlers/user_handler.go
+         created: /home/your_user/go/src/github.com/your_account/store/app/myself/myself_view.go
+         created: /home/your_user/go/src/github.com/your_account/store/app/session/session_model.go
+         created: /home/your_user/go/src/github.com/your_account/store/app/session/session_view.go
+         created: /home/your_user/go/src/github.com/your_account/store/app/session/mailer/password_recovery.en.html
+         created: /home/your_user/go/src/github.com/your_account/store/app/session/mailer/password_recovery.pt-BR.html
+         created: /home/your_user/go/src/github.com/your_account/store/app/session/mailer/sign_up.en.html
+         created: /home/your_user/go/src/github.com/your_account/store/app/session/mailer/sign_up.pt-BR.html
+         created: /home/your_user/go/src/github.com/your_account/store/app/user/user_model.go
+         created: /home/your_user/go/src/github.com/your_account/store/app/user/user_view.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/app/handler/handler.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/app/model/model.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/app/model/pagination/pagination.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/app/model/searchengine/searchengine.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/app/view/view.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/conversor/conversor.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/crypto/crypto.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/locale/locale.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/log/log.go
+         created: /home/your_user/go/src/github.com/your_account/store/commons/mailer/mailer.go
+         created: /home/your_user/go/src/github.com/your_account/store/config/config.go
+         created: /home/your_user/go/src/github.com/your_account/store/config/app.yml
+         created: /home/your_user/go/src/github.com/your_account/store/config/database.yml
+         created: /home/your_user/go/src/github.com/your_account/store/config/email.yml
+         created: /home/your_user/go/src/github.com/your_account/store/config/keys/app.key.rsa
+         created: /home/your_user/go/src/github.com/your_account/store/config/keys/app.key.rsa.pub
+         created: /home/your_user/go/src/github.com/your_account/store/config/locales/en.yml
+         created: /home/your_user/go/src/github.com/your_account/store/config/locales/pt-BR.yml
+         created: /home/your_user/go/src/github.com/your_account/store/db/entities/session_entity.go
+         created: /home/your_user/go/src/github.com/your_account/store/db/entities/user_entity.go
+         created: /home/your_user/go/src/github.com/your_account/store/db/schema/migrate.go
+         created: /home/your_user/go/src/github.com/your_account/store/routes/authorize.go
+         created: /home/your_user/go/src/github.com/your_account/store/routes/middleware.go
+         created: /home/your_user/go/src/github.com/your_account/store/routes/routes.go
+         created: /home/your_user/go/src/github.com/your_account/store/main.go
+
+Your RESTful API was successfully created!
+
+Change to the root directory using the command line below: 
+cd /home/your_user/go/src/github.com/your_account/store
+
+Set up your database connection modifying the file config/database.yml
+
+For more details call help:
+go run main.go --help
+          </pre>
+
+          <p style="text-align:justify">
+            There are two options:
+            
+            <ul>
+              <li><i>-R</i> or <i>--skip-default-resources</i> it skips the default resources. Check the <a href="/default-resourses.html">Default Resources</a> section.</li>
+              <li><i>-G</i> or <i>--skip-git</i> it skips the <i>.gitignore</i> file.</li>
+            </ul>
+          </p>
+          
+          <h3 class="main-header" id="the-generate-command">3&nbsp;&nbsp;The "generate" Command</h3>
+          
+          <p style="text-align:justify">
+           The <i>generate</i> command adds new codes to project in an organized way. There are 3 parameters: SUBJECT, NAME and ATTRIBUTES.
+          </p>
+           
+          <p style="text-align:justify">
+            <i>SUBJECT</i>: can be <a href="#scaffold">scaffold</a>, <a href="#model">model</a>, <a href="#entity">entity</a> and <a href="#handler">handler</a>
+          </p>
+
+          <p style="text-align:justify">
+            <i>NAME:</i> is the name of the <a href="#scaffold">scaffold</a>, <a href="#model">model</a>, <a href="#entity">entity</a> and <a href="#handler">handler</a>. For example, </i>description:string</i>
+          </p>
+
+          <p style="text-align:justify">
+            <i>ATTRIBUTES</i>: if the <i>SUBJECT</i> is not a <i>handler</i>, the attributes are pairs of "name" and "type" separated by a ":". They will be used to define the model attributes in the application and the columns in the database. For example, if we define a attribute <i>title:string</i>, it means that, the model on application has a <i>string</i> attribute called <i>title</i> and the table on database has a <i>VARCHAR(255)</i> column called <i>title</i>.
+          </p>
+
+          <p style="text-align:justify">
+            The table below contains all available types:
+          </p>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Attribute Type</th>
+                <th>Application</th>
+                <th>Database</th>
+              </tr>              
+            </thead>
+            <tbody>
+              <tr>
+                <td><i>string</i></td>
+                <td>string</td>
+                <td>VARCHAR(255)</td>
+              </tr>
+              <tr>
+                <td><i>text</i></td>
+                <td>string</td>
+                <td>text</td>
+              </tr>
+              <tr>
+                <td><i>integer</i></td>
+                <td>int64</td>
+                <td>integer</td>
+              </tr>
+              <tr>
+                <td><i>decimal</i></td>
+                <td>float64</td>
+                <td>numeric</td>
+              </tr>
+              <tr>
+                <td><i>datetime</i></td>
+                <td>time.Time</td>
+                <td>timestamp with time zone</td>
+              </tr>
+              <tr>
+                <td><i>bool</i></td>
+                <td>bool</td>
+                <td>boolean</td>
+              </tr>
+              <tr>
+                <td><i>reference</i></td>
+                <td>uint</td>
+                <td>FOREIGN KEY</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <p style="text-align:justify">
+            But, if it is a <i>handler</i>, the attributes will be functions inside the <i>handler</i>.
+          </p>
+
+          <p style="text-align:justify">
+            If you have questions right now, in the followings sub-sections we are going to see by examples how the <i>generate command</i> workds.
+          </p>
+
+          <h4 id="scaffold">3.1&nbsp;&nbsp;Scaffold</h4>
+
+          <p style="text-align:justify">
+           <i>Scaffold</i> generates a full set of code for model, view, handler, routes and authorization.
+          </p>
+
+          <pre><code class="nohighlight">
+$> wheel generate scaffold movie title:string year:integer
+          </code></pre>
+          
+          <pre class="terminal">          
+"Go" seems installed
+Checking dependences...
+         package github.com/jinzhu/gorm was found
+         package gopkg.in/yaml.v2 was found
+         package github.com/gorilla/mux was found
+         package github.com/dgrijalva/jwt-go was found
+         package github.com/satori/go.uuid was found
+         package github.com/lib/pq was found
+         package golang.org/x/crypto/bcrypt was found
+Generating new CRUD...
+         created: app/movie/movie_model.go
+         created: app/movie/movie_view.go
+         created: db/entities/movie_entity.go
+         created: app/handlers/movie_handler.go
+         updated: routes/routes.go
+         updated: db/schema/migrate.go
+         updated: routes/authorize.go
+          </pre>
+
+          <p style="text-align:justify">
+           Wheel creates the directories of models, view, entities, handlers and database schema, if they don't exist. Creates the model, view, entity and handler files. Updates the routes, migration and authorization files.
+          </p>
+          
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
+            <p style="text-align:justify">
+              Run the migration mode to update the database schema.
+            </p>
+          </div>
+
+          <pre><code class="nohighlight">
+$> go run main.go -mode=migrate
+          </code></pre>
+          
+          <h4 id="model">3.2&nbsp;&nbsp;Model</h4>
+
+          <p style="text-align:justify">
+           <i>Model</i> manages the data and the rules of the application. This <i>subject</i> generates the <i>model</i> and database schema defined by the <i>attributes</i>.
+          </p>
+
+          <pre><code class="nohighlight">
+$> wheel generate model group name:string
+          </code></pre>
+          
+          <pre class="terminal">          
+"Go" seems installed
+Checking dependences...
+         package github.com/jinzhu/gorm was found
+         package gopkg.in/yaml.v2 was found
+         package github.com/gorilla/mux was found
+         package github.com/dgrijalva/jwt-go was found
+         package github.com/satori/go.uuid was found
+         package github.com/lib/pq was found
+         package golang.org/x/crypto/bcrypt was found
+Generating new CRUD...
+         created: app/group/group_model.go
+         created: db/entities/group_entity.go
+         updated: db/schema/migrate.go
+          </pre>
+
+          <p style="text-align:justify">
+           Wheel creates the directories of models, entities and database schema, if they don't exist. Creates the model and the entity files. Updates only the migration file.
+          </p>
+          
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
+            <p style="text-align:justify">
+              Run the migration mode to update the database schema.
+            </p>
+          </div>
+
+          <pre><code class="nohighlight">
+$> go run main.go -mode=migrate
+          </code></pre>
+                    
+          <h4 id="entity">3.3&nbsp;&nbsp;Entity</h4>
+
+          <p style="text-align:justify">
+           <i>Entity</i> generates the representation of the table in the database without the <i>model</i>.
+          </p>
+
+          <pre><code class="nohighlight">
+$> wheel generate entity cast actor:string character:string movie:reference
+          </code></pre>
+          
+          <pre class="terminal">          
+"Go" seems installed
+Checking dependences...
+         package github.com/jinzhu/gorm was found
+         package gopkg.in/yaml.v2 was found
+         package github.com/gorilla/mux was found
+         package github.com/dgrijalva/jwt-go was found
+         package github.com/satori/go.uuid was found
+         package github.com/lib/pq was found
+         package golang.org/x/crypto/bcrypt was found
+Generating new CRUD...
+         created: db/entities/cast_entity.go
+         updated: db/schema/migrate.go
+          </pre>
+
+          <p style="text-align:justify">
+           Wheel creates the directories of entities and database schema, if they don't exist. Creates the entity file. Updates only the migration file.
+          </p>
+          
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
+            <p style="text-align:justify">
+              Run the migration mode to update the database schema.
+            </p>
+          </div>
+
+          <pre><code class="nohighlight">
+$> go run main.go -mode=migrate
+          </code></pre>
+          
+          <h4 id="handler">3.4&nbsp;&nbsp;Handler</h4>
+
+          <p style="text-align:justify">
+           <i>Handler</i> is the controller of the MVC architecture. This <i>subject</i> generates just a single <i>handler</i> file with the functions defined by the <i>attributes</i>.
+          </p>
+
+          <p style="text-align:justify">
+           Let's generate a <i>handler</i> called <i>animal</i> with functions (<i>attributes</i>): <i>elephant</i> and <i>zebra</i>.
+          </p>
+
+          <pre><code class="nohighlight">
+$> wheel generate handler animal elephant zebra
+          </code></pre>
+          
+          <pre class="terminal">          
+"Go" seems installed
+Checking dependences...
+         package github.com/jinzhu/gorm was found
+         package gopkg.in/yaml.v2 was found
+         package github.com/gorilla/mux was found
+         package github.com/dgrijalva/jwt-go was found
+         package github.com/satori/go.uuid was found
+         package github.com/lib/pq was found
+         package golang.org/x/crypto/bcrypt was found
+Generating new CRUD...
+         created: app/handlers/animal_handler.go
+         updated: routes/routes.go
+         updated: routes/authorize.go
+          </pre>
+
+          <p style="text-align:justify">
+           Wheel creates the directories of handlers, if it doesn't exist. Creates only the handler file. Updates the routes and authorization files.
+          </p>
+
+          <p style="text-align:justify">
+           If you check the routes file (<i>routes/routes.go</i>) you will find out these two lines:
+          </p>
+
+          <pre><code class="go">
+  ...
+  
+  router.HandleFunc("/animals/elephant", handlers.AnimalDog).Methods("GET")
+  router.HandleFunc("/animals/zebra", handlers.AnimalCat).Methods("GET")
+  
+  ...
+          </code></pre>
+          
+          <p style="text-align:justify">
+           Accessing these two routes you will have the following returns:
+          </p>          
+          
+          <pre><code class="nohighlight">
+$> curl -X GET http://localhost:8081/animals/elephant
+          </code></pre>
+          
+          <pre><code class="json">
+{
+    "system_message": {
+        "type": "notice",
+        "content": "Handler: AnimalElephant"
+    }
+}
+          </code></pre>
+
+          <pre><code class="nohighlight">
+$> curl -X GET http://localhost:8081/animals/zebra
+          </code></pre>
+
+          <pre><code class="json">
+{
+    "system_message": {
+        "type": "notice",
+        "content": "Handler: AnimalZebra"
+    }
+}
+          </code></pre>
+
+          <p style="text-align:justify">
+           Now you can create customized <i>handlers</i> and write your own code to interact with <i>models</i> and <i>views</i>.
+          </p>          
+                    
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>Thanks from the Wheel Core Team</p>
+      </div>
+    </div>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='https://www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
+    </script>
+    <!-- build:js scripts/vendor.js -->
+    <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/node_modules/popper.js/dist/umd/popper.js"></script>
+    <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/node_modules/highlightjs/highlight.pack.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <!-- endbuild -->
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>

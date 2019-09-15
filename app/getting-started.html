@@ -34,22 +34,25 @@
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="padding:10px;15px;10px;15px;">
               <div class="row" style="width:700px;">
                 <div class="col">
-                  <h2>Install & Usage</h2>
+                  <h2>Getting Started</h2>
                   <ul>
-                    <li><a href="/install-usage.html#install">Install</a></li>
-                    <li><a href="/install-usage.html#usage">Usage</a></li>
+                    <li><a href="/getting-started.html#install">Install</a></li>
+                    <li><a href="/getting-started.html#usage">Usage</a></li>
                   </ul>
 
                   <h2>Default Resources</h2>
                   <ul>
-                    <li><a href="/default-sessions.html#sessions">Sessions</a></li>
+                    <li><a href="/default-resources.html#overview">Overview</a></li>
+                    <li><a href="/default-resources.html#sessions">Sessions</a></li>
                     <li><a href="/default-resources.html#myself">Myself</a></li>
                     <li><a href="/default-resources.html#users">Users</a></li>
                   </ul>
 
-                  <h2>Custom Resources</h2>
+                  <h2>Code Generator</h2>
                   <ul>
-                    <li><a href="/custom-resources.html">Create custom resources</a></li>
+                    <li><a href="/code-generator.html#overview">Overview</a></li>
+                    <li><a href="/code-generator.html#the-new-command">The "new" Command</a></li>
+                    <li><a href="/code-generator.html#the-generate-command">The "generate" Command</a></li>
                   </ul>
 
                   <h2>Internals</h2>
@@ -92,8 +95,8 @@
       </div>
 
       <div class="jumbotron">
-        <h1 class="display-3">Install & Usage</h1>
-        <ul style="text-align:left;">
+        <h1 class="display-3">Getting Started</h1>
+        <ol class="page-menu" style="text-align:left;">
           <li>
             <a href="#install">Install</a>
             <ul>
@@ -144,25 +147,25 @@
               <li><a href="#new-crud-wishlist-destroying-item">Destroy a wishlist item</a></li>
             </ul>
           </li>
-        </ul>
+        </ol>
       </div>
 
       <div class="row marketing">
         <div class="col-lg-12">
           
-          <h3 id="install">1 Install</h4>
-          <h4 id="install-go">1.1 Go</h5>
+          <h3 class="main-header" id="install">1&nbsp;&nbsp;Install</h3>
+          <h4 class="sub-header" id="install-go">1.1&nbsp;&nbsp;Go</h4>
           <p style="text-align:justify">
           Check the <a href="https://golang.org/doc/install" target="_blank">Go documentation</a> to download and install.
           </p>
           
-          <h4 id="install-dependences">1.2 Dependences</h5>
+          <h4 class="sub-header" id="install-dependences">1.2&nbsp;&nbsp;Dependences</h4>
           <pre><code class="nohighlight">
 $> go get github.com/iancoleman/strcase
 $> go get github.com/jinzhu/inflection              
           </code></pre>
           
-          <h4 id="install-wheel">1.3 Wheel</h5>
+          <h4 class="sub-header" id="install-wheel">1.3&nbsp;&nbsp;Wheel</h4>
           <pre><code class="nohighlight">
 $> go get github.com/unity26org/wheel
 $> cd GOPATH/src/github.com/unity26org/wheel
@@ -170,8 +173,11 @@ $> go build -o wheel main.go
 $> sudo mv wheel /usr/bin
           </code></pre>
           
-          <div class="alert alert-warning" role="alert" style="text-align:justify">
-            In the example above, <b>GOPATH</b> is where the Go packages and sources are installed. The executable file <b>wheel</b> was moved to <i>/usr/bin</i>. But feel free to set it up to any directory you want. Just add the path to your <i>.profile</i>, as you can see below:
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              In the example above, <b>GOPATH</b> is where the Go packages and sources are installed. The executable file <b>wheel</b> was moved to <i>/usr/bin</i>. But feel free to set it up to any directory you want. Just add the path to your <i>.profile</i>, as you can see below:
+            </p>
           </div>
 
           <pre><code class="nohighlight">
@@ -179,7 +185,7 @@ export PATH=$PATH:YOUR_DESIRED_PATH
           </code></pre>
           
           <!-- Usage -->
-          <h3 id="usage">2 Usage</h3>
+          <h3 class="main-header" id="usage">2&nbsp;&nbsp;Usage</h3>
           <p style="text-align:justify">Wheel has only two options: <i>new</i>, to create new APIs, and <i>generate</i>, to add new resources to your API.</p>
           
           <p style="text-align:justify">Check <i>help</i> for more details.</p>
@@ -188,9 +194,7 @@ export PATH=$PATH:YOUR_DESIRED_PATH
 wheel --help
           </code></pre>
           
-          <h4 id="usage-creating-new-project">
-            2.1 Creating a New Project
-          </h4>
+          <h4 class="sub-header" id="usage-creating-new-project">2.1&nbsp;&nbsp;Creating a New Project</h4>
 
           <p style="text-align:justify">
             Let's create an API for a car catalog.
@@ -224,17 +228,19 @@ For more details call help:
 go run main.go --help
           </code></pre>
 
-          <div class="alert alert-warning" role="alert" style="text-align:justify">
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
             <p style="text-align:justify">Don't forget to go to the directory <i>GOPATH/src/github.com/account_name/car_catalog</i>.</p>
             
             <p style="text-align:justify">And remember: <b>GOPATH</b> is where Go packages and sources are installed.</p>
           </div>
 
-          <div class="alert alert-primary" role="alert" style="text-align:justify">
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
             <p style="text-align:justify">Once you have created a new project, Wheel gives, by default, RESTful resources for session control, user management and more. To check these <i>default resources</i> click <a href="/default-resources.html" target="_blank">here</a>.</p>
           </div>
 
-          <h4 id="usage-file-system">2.2 File System</h4>
+          <h4 class="sub-header" id="usage-file-system">2.2&nbsp;&nbsp;File System</h4>
 
           <table class="table">
             <thead>
@@ -271,7 +277,7 @@ go run main.go --help
             </tbody>
           </table>
 
-          <h4 id="usage-configure">2.3 Configure</h4>
+          <h4 class="sub-header" id="usage-configure">2.3&nbsp;&nbsp;Configure</h4>
 
           <p style="text-align:justify"><b>Database</b></p>
 
@@ -329,10 +335,13 @@ go run main.go --help
 
           <p style="text-align:justify">Available locales files that contains words and phrases for internacionalization. You can add your own locales files, but remember to add to <i>config/app.yml</i> configuration file first.</p>
 
-          <h4 id="usage-running">2.4 Running</h4>
+          <h4 class="sub-header" id="usage-running">2.4&nbsp;&nbsp;Running</h4>
           
-          <div class="alert alert-warning" role="alert" style="text-align:justify">
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
+            <p style="text-align:justify">
           Before running, you must be sure your database schema is up to date, that's why you need to run the <i>migrate</i> mode.
+            </p>
           </div>
 
           <pre><code class="nohighlight">
@@ -340,6 +349,7 @@ $> go run main.go -mode=migrate
           </code></pre>
 
           <div class="alert alert-primary" role="alert" style="text-align:justify">
+            <p><b>Quick tip!</b></p>
             <p style="text-align:justify">
               To learn more about the <i>migration</i> functionality check its section clicking <a href="/features.html#migration" target="_blank">here</a>.
             </p>
@@ -357,17 +367,20 @@ $> go run main.go
 
           <pre><code class="json">
 {
-  system_message: {
-    type: "notice",
-    content: "Yeah! Your API is working!"
+  "system_message": {
+    "type": "notice",
+    "content": "Yeah! Your API is working!"
   }
 }
           </code></pre>
           
-          <h3 id="usage-create-new-crud-cars">2.5 Creating new CRUD for cars</h3>
+          <h4 class="sub-header" id="usage-create-new-crud-cars">2.5&nbsp;&nbsp;Creating new CRUD for cars</h4>
 
-          <div class="alert alert-warning" role="alert" style="text-align:justify">
-            Don't forget to call the directory where the application were generated.
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
+            <p style="text-align:justify">
+              Don't forget to call the directory where the application were generated.
+            </p>
           </div>
           
           <pre><code class="nohighlight">
@@ -391,8 +404,9 @@ Generating new CRUD...
           </code></pre>
 
           <div class="alert alert-primary" role="alert" style="text-align:justify">
+            <p><b>Quick tip!</b></p>
             <p style="text-align:justify">
-              For more information how to create custom resources click <a href="/custom-resources.html">here</a>.
+              For more information how to create custom resources click <a href="/code-generator.html">here</a>.
             </p>
           </div>
 
@@ -410,7 +424,7 @@ $> go run main.go -mode=migrate
 $> go run main.go
           </code></pre>
 
-          <h3 id="usage-routes">2.6 Routes</h3>
+          <h4 class="sub-header" id="usage-routes">2.6&nbsp;&nbsp;Routes</h4>
 
           <p style="text-align:justify">When generates a new CRUD, Wheel adds to file <i>routes/routes.go</i> the <i>cars</i> RESTful interfaces.</p>
           
@@ -436,13 +450,15 @@ router.HandleFunc("/cars/{id}", handlers.CarDestroy).Methods("DELETE")
             Each route is identified by a combination of a <i>path</i> (<i>/cars</i> or <i>/cars/{id}</i>) and a HTTP verb (<i>GET</i>, <i>POST</i>, <i>PUT</i> or <i>DELETE</i>). And this combination represents an interface to a <i>handler function</i> (handlers.CarCreate, handlers.CarList, handlers.CarShow, handlers.CarUpdate or handlers.CarDelete).
           </p>
 
-          <div class="alert alert-warning" role="alert" style="text-align:justify">
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
             <p style="text-align:justify">
               <i>{id}</i> is the parameter that identifies uniquely a record on the database.
             </p>
           </div>
           
-          <div class="alert alert-primary" role="alert" style="text-align:justify">
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
             <p style="text-align:justify">
               Check the <a href="/features.html#routes">routes feature</a> section for more details.
             </p>
@@ -452,7 +468,7 @@ router.HandleFunc("/cars/{id}", handlers.CarDestroy).Methods("DELETE")
             At this point we already have the resources to interact with the API. To make requests to the API we are going to use the <a href="https://curl.haxx.se/" targel="_blank">curl</a> program. If you are <b>not</b> confortable with command lines, we recommend you to use the software <a href="https://www.getpostman.com/" target="_blank">Postman</a>. But feel free to use another similar software.
           </p>          
 
-          <h4 id="usage-create">2.7 Creating cars</h4>
+          <h4 class="sub-header" id="usage-create">2.7&nbsp;&nbsp;Creating cars</h4>
 
           <p style="text-align:justify">
             To create new car records, we need to make HTTP requests to the path <i>/cars</i> using the HTTP verb <i>POST</i>. As you can see in the previous item.
@@ -488,7 +504,7 @@ $> curl -X POST -F 'description=Chevrolet' -F 'year=2019' -F 'price=25000.00' -F
 }
           </code></pre>
 
-          <h4 id="usage-list">2.8 Listing cars</h4>
+          <h4 class="sub-header" id="usage-list">2.8&nbsp;&nbsp;Listing cars</h4>
 
           <p style="text-align:justify">
             To list the car records, we need to make HTTP requests to the path <i>/cars</i> using the HTTP verb <i>GET</i>.
@@ -523,13 +539,14 @@ $> curl -X GET http://localhost:8081/cars
 }
           </code></pre>
           
-          <div class="alert alert-primary" role="alert" style="text-align:justify">
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
             <p style="text-align:justify">
               To interact with <i>pagination</i> you can submit the <i>page</i> and <i>per_page</i> parameters that mean the number of the page and the maximum numbers of records per page, respectively. Check the <a href="/features.html#pagination">pagination</a> feature section for more details.
             </p>
           </div>
 
-          <h4 id="usage-show">2.9 Showing a single car</h4>
+          <h4 class="sub-header" id="usage-show">2.9&nbsp;&nbsp;Showing a single car</h4>
 
           <p style="text-align:justify">
             To show one single car record, we need to make HTTP requests to the path <i>/cars/{id}</i> using the HTTP verb <i>GET</i>. Again, <i>{id}</i> is the parameter that identifies uniquely a record on the database.
@@ -555,7 +572,7 @@ $> curl -X GET http://localhost:8081/cars/1
 }
           </code></pre>
         
-          <h4 id="usage-update">2.10 Updating a car</h4>
+          <h4 class="sub-header" id="usage-update">2.10&nbsp;&nbsp;Updating a car</h4>
 
           <p style="text-align:justify">
             To update a car record, we need to make HTTP requests to the path <i>/cars/{id}</i> using the HTTP verb <i>PUT</i>. Again and again, <i>{id}</i> is the parameter that identifies uniquely a record on the database. At this example we will update only the field <i>price</i> and <i>year</i>. But you can try to update the fields <i>description</i> and <i>available</i> too.
@@ -588,7 +605,7 @@ $> curl -X PUT -F 'price=18500.00' -F 'year=18500.00' http://localhost:8081/cars
 }
           </code></pre>
 
-          <h4 id="usage-destroy">2.11 Destroying a car</h4>
+          <h4 class="sub-header" id="usage-destroy">2.11&nbsp;&nbsp;Destroying a car</h4>
 
           <p style="text-align:justify">
             To desroy a car record, we need to make HTTP requests to the path <i>/cars/{id}</i> using the HTTP verb <i>DELETE</i>. One more time, <i>{id}</i> is the parameter that identifies uniquely a record on the database.
@@ -611,7 +628,7 @@ $> curl -X DELETE http://localhost:8081/cars/1
 }
           </code></pre>
           
-          <h3 id="validation">3 Validation</h3>
+          <h3 class="main-header" id="validation">3&nbsp;&nbsp;Validation</h3>
           
           <p style="text-align:justify">
             Now let's see how to validate the parameters sent by the users. Open the file <i>app/car/car_model.go</i> and find the function <i>IsValid</i>. Inside it you can write the validation code. 
@@ -711,7 +728,7 @@ $> curl -X POST -F 'year=3000' -F 'price=0' http://localhost:8081/cars
             Now it's up to you write more validations.
           </p>
 
-          <h3 id="authentication">4 Authentication</h3>
+          <h3 class="main-header" id="authentication">4&nbsp;&nbsp;Authentication</h3>
 
           <p style="text-align:justify">
             Authentication is one of many default features generated by <i>Wheel</i>. And it creates a admin user when you run the <i>migration</i>. Check file <i>db/schema/migrate.go</i>. If you didn't change the default admin credentials, here they are:
@@ -730,10 +747,13 @@ $> curl -X POST -F 'year=3000' -F 'price=0' http://localhost:8081/cars
             </tbody>
           </table>
 
-          <h4 id="authentication-sign-in">4.1 Signing in</h4>
+          <h4 class="sub-header" id="authentication-sign-in">4.1&nbsp;&nbsp;Signing in</h4>
 
           <div class="alert alert-primary" role="alert" style="text-align:justify">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
               The <i>sign_in</i> feature is fully documented in <a href="default-resources.html#sessions-sign-in">Default Resources</a> section.
+            </p>
           </div>
           
           <p style="text-align:justify">
@@ -759,18 +779,21 @@ $> curl -X POST -F 'email=user@example.com' -F 'password=!Secret.123!'  http://l
 }
           </code></pre>
 
-          <div class="alert alert-warning" role="alert" style="text-align:justify">
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
             <p style="text-align:justify">
-              <b>Very important!</b><br>
               To identify the user, you need to send this returned <i>token</i> in the header of subsequent requests. And this <i>token</i> expires. The returned field <i>expires</i> is the time to live of the <i>token</i> in seconds.
             </p>
           </div>
 
 
-          <h4 id="authentication-sign-out">4.2 Signing out</h4>
+          <h4 class="sub-header" id="authentication-sign-out">4.2&nbsp;&nbsp;Signing out</h4>
 
-          <div class="alert alert-primary" role="alert" style="text-align:justify">
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
               The <i>sign_out</i> feature is fully documented in <a href="default-resources.html#sessions-sign-out">Default Resources</a> section.
+            </p>
           </div>
 
           <p style="text-align:justify">
@@ -794,7 +817,7 @@ $> curl -X DELETE -H 'header:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://loc
 }
           </code></pre>
           
-          <h3 id="authorization">5 Authorization</h3>
+          <h3 class="main-header" id="authorization">5&nbsp;&nbsp;Authorization</h3>
           
           <p style="text-align:justify">
             In the real-world, developers should keep some data to be manipulated for authorized users only. That's why Wheel generates the file <i>routes/authorization.go</i>. This file holds permissions to users access application resources.
@@ -804,7 +827,7 @@ $> curl -X DELETE -H 'header:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://loc
             When a new CRUD is generated, Wheel generates automatically the permissions for this new CRUD but it has no restrictions, yet.
           </p>
 
-          <h4 id="authorization-setting-permission">5.1 Setting permissions</h4>
+          <h4 class="sub-header" id="authorization-setting-permission">5.1&nbsp;&nbsp;Setting permissions</h4>
 
           <p style="text-align:justify">
             To grant permission, it must match a combination of these three items:
@@ -904,13 +927,14 @@ $> curl -X POST  -F 'description=Ford' -F 'year=2016' -F 'price=15000.00' -F 'av
 }
           </code></pre>
 
-          <div class="alert alert-primary" role="alert" style="text-align:justify">
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
             <p style="text-align:justify">
               Go ahead and register 5 cars. We are goning to need them for furthers examples.
             </p>
           </div>
 
-          <h3 id="new-crud-wishlist">6 New CRUD for Wishlist</h3>
+          <h3 class="main-header" id="new-crud-wishlist">6&nbsp;&nbsp;New CRUD for Wishlist</h3>
           
           <p style="text-align:justify">
             Now let's emphasize the relationship between database entities. In this example, let's keep in mind these requirements:
@@ -937,21 +961,24 @@ Generating new CRUD...
            </code></pre>
 
           <p style="text-align:justify">
-            The <i>reference</i> type means that the entity wishlists has references to entity users and to entity cars as well.
+            The <i>reference</i> type means that the entity wishlists has references to entity <i>users</i> and to entity <i>cars</i> as well.
           </p>
 
-          <p style="text-align:justify">
-            Run the migration to update the database schema.
-          </p>
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
+            <p style="text-align:justify">
+              Run the migration to update the database schema.
+            </p>
+          </div>
           
           <pre><code class="nohighlight">
 $> go run main.go -mode=migration
           </code></pre>
         
-          <h4 id="new-crud-wishlist-adding-item">6.1 Adding items to wishlist</h4>
+          <h4 class="sub-header" id="new-crud-wishlist-adding-item">6.1&nbsp;&nbsp;Adding items to wishlist</h4>
 
           <p style="text-align:justify">
-            Users can add cars only to their own wishlist. To identify the current user we can use the internal function <i>SessionCheck</i> and pass the <i>token</i>, that is in the header of the request, as the parameter. 
+            Users can add cars only to their own wishlist. To identify the <i>current user</i> we need the internal function <i>SessionCheck</i> and pass the <i>token</i> as the parameter. The <i>token</i> should be in the header of the request. 
           </p>
 
           <pre><code class="go">
@@ -984,8 +1011,15 @@ func WishlistCreate(w http.ResponseWriter, r *http.Request) {
           </code></pre>
 
           <p style="text-align:justify">
-            Make sure you have a valid <i>token</i> and a valid <i>car_id</i> execute the request:
+            Make sure you have a valid <i>token</i>, a valid <i>car_id</i> and execute this request:
           </p>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              If the <i>token</i> gets expired or you lost it, nevermind. Just <i>sign in</i> again and use the new <i>token</i>.
+            </p>
+          </div>
 
           <pre><code class="nohighlight">
 $> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'car_id=8' http://localhost:8081/wishlist
@@ -1044,7 +1078,7 @@ $> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'car_id=5'
             Great! We have just created a wishlist with two items. 
           </p>
         
-          <h4 id="new-crud-wishlist-listing-items">6.2 Listing wishlist items</h4>
+          <h4 class="sub-header" id="new-crud-wishlist-listing-items">6.2&nbsp;&nbsp;Listing wishlist items</h4>
 
           <p style="text-align:justify">
             Users can just list their own wishlist items. To filter the wishlist items for the current user we need to add these lines, below, to file <i>app/handlers/wishlist_handler.go</i>. 
@@ -1061,8 +1095,23 @@ normalizedParams["user_id_eq"] = strconv.FormatUint(uint64(currentUserID), 10)
           </code></pre>
           
           <p style="text-align:justify">
-            The packge <i>strconv</i> shoud be included to <i>import</i> statement and the rest inside the function <i>WishlistList</i>. The <i>normalizedParams["user_id_eq"] = strconv.FormatUint(uint64(userID), 10)</i> means we are going to use the <i>search engine</i> feature. For more details about it, check the <a href="/features.html#search-engine">search engine</a> feature section.
+            Package <i>strconv</i> shoud be included to <i>import</i> statement. The others two lines should be inserted in the function <i>WishlistList</i>, as you can see the code below. 
           </p>
+            
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
+            <p style="text-align:justify">
+              The line <i>normalizedParams["user_id_eq"] = strconv.FormatUint(uint64(userID), 10)</i> means we are going to use Wheel's built in <i>search engine</i>. And it goes to search on database registers of the specific user. 
+            </p>
+          </div>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              Check the <a href="/features.html#search-engine">search engine</a> feature section.
+            </p>
+          </div>
+            
 
           <pre><code class="go">
 import strconv
@@ -1238,10 +1287,10 @@ $> curl -X GET -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://localho
 }
           </code></pre>
 
-          <h4 id="new-crud-wishlist-showing-item">6.3 Showing a single wishlist item</h4>
+          <h4 class="sub-header" id="new-crud-wishlist-showing-item">6.3&nbsp;&nbsp;Showing a single wishlist item</h4>
 
           <p style="text-align:justify">
-            Add this function to the file <i>app/wishlist/wishlist_model.go</i> to make sure current users just can find their own wishlist items:
+            Add this function to the file <i>app/wishlist/wishlist_model.go</i> to make sure <i>current users</i> just can find their own wishlist items:
           </p>
 
           <pre><code class="go">
@@ -1258,7 +1307,12 @@ func FindByIdAndUserId(id interface{}, userID interface{}) (entities.Wishlist, e
 }
           </code></pre>
           
-          
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
+            <p style="text-align:justify">
+              The function above is going to used for update and destroy functions, as well.
+            </p>
+          </div>
 
           <p style="text-align:justify">
             Edit file <i>app/handlers/wishlist_handler.go</i> and make the following changes at <i>WishlistShow</i> function:
@@ -1266,25 +1320,25 @@ func FindByIdAndUserId(id interface{}, userID interface{}) (entities.Wishlist, e
 
           <pre><code class="go">
 func WishlistShow(w http.ResponseWriter, r *http.Request) {
-	log.Info.Println("Handler: WishlistShow")
-	w.Header().Set("Content-Type", "application/json")
+  log.Info.Println("Handler: WishlistShow")
+  w.Header().Set("Content-Type", "application/json")
 
-	params := mux.Vars(r)
-	// wishlistCurrent, err := wishlist.Find(params["id"]) // remove this line
+  params := mux.Vars(r)
+  // wishlistCurrent, err := wishlist.Find(params["id"]) // remove this line
   // Add these two following lines
-	userID, _ := SessionCheck(r.Header.Get("token"))
-	wishlistCurrent, err := wishlist.FindByIdAndUserId(params["id"], userID)
+  userID, _ := SessionCheck(r.Header.Get("token"))
+  wishlistCurrent, err := wishlist.FindByIdAndUserId(params["id"], userID)
 
-	if err == nil {
-		json.NewEncoder(w).Encode(wishlist.SetJson(wishlistCurrent))
-	} else {
-		json.NewEncoder(w).Encode(view.SetSystemMessage("alert", "wishlist was not found"))
-	}
+  if err == nil {
+    json.NewEncoder(w).Encode(wishlist.SetJson(wishlistCurrent))
+  } else {
+    json.NewEncoder(w).Encode(view.SetSystemMessage("alert", "wishlist was not found"))
+  }
 }
           </code></pre>
 
           <p style="text-align:justify">
-            Run the request (don't forget to set the wishlist's id at the end of the URL):
+            Run the request (don't forget to set the wishlist's <i>id</i> at the end of the URL):
           </p>
 
           <pre><code class="nohighlight">
@@ -1314,7 +1368,7 @@ $> curl -X GET -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://localho
           </code></pre>
 
         
-          <h4 id="new-crud-wishlist-updating-item">6.4 Updating a wishlist item</h4>
+          <h4 class="sub-header" id="new-crud-wishlist-updating-item">6.4&nbsp;&nbsp;Updating a wishlist item</h4>
 
           <p style="text-align:justify">
             Edit file <i>app/handlers/wishlist_handler.go</i> and make the following changes at <i>WishlistUpdate</i> function:
@@ -1328,8 +1382,11 @@ func WishlistUpdate(w http.ResponseWriter, r *http.Request) {
   params := mux.Vars(r)
   userID, _ := SessionCheck(r.Header.Get("token")) // add this line
 
-  // wishlistCurrent, err := wishlist.Find(params["id"])  // remove this line
-  wishlistCurrent, err := wishlist.FindByIdAndUserId(params["id"], userID)  // add this line
+  // and replace this line
+  // wishlistCurrent, err := wishlist.Find(params["id"])
+  // for this single one
+  wishlistCurrent, err := wishlist.FindByIdAndUserId(params["id"], userID)
+  
   if err != nil {
     json.NewEncoder(w).Encode(view.SetErrorMessage("alert", "wishlist was not updated", []error{err}))
     return
@@ -1382,7 +1439,7 @@ $> curl -X PUT -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'car_id=7' 
           </code></pre>
 
 
-          <h4 id="new-crud-wishlist-destroying-item">6.5 Destroying a wishlist item</h4>
+          <h4 class="sub-header" id="new-crud-wishlist-destroying-item">6.5&nbsp;&nbsp;Destroying a wishlist item</h4>
 
           <p style="text-align:justify">
             Edit file <i>app/handlers/wishlist_handler.go</i> and make the following changes at <i>WishlistDestroy</i> function:
@@ -1390,20 +1447,21 @@ $> curl -X PUT -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'car_id=7' 
 
           <pre><code class="go">
 func WishlistDestroy(w http.ResponseWriter, r *http.Request) {
-	log.Info.Println("Handler: WishlistDestroy")
-	w.Header().Set("Content-Type", "application/json")
+  log.Info.Println("Handler: WishlistDestroy")
+  w.Header().Set("Content-Type", "application/json")
 
-	params := mux.Vars(r)
-	// wishlistCurrent, err := wishlist.Find(params["id"]) // remove this line
-  // Add these two following lines
-	userID, _ := SessionCheck(r.Header.Get("token"))
-	wishlistCurrent, err := wishlist.FindByIdAndUserId(params["id"], userID)
+  params := mux.Vars(r)
+  // replace this single line below
+  // wishlistCurrent, err := wishlist.Find(params["id"])
+  // for these two following lines
+  userID, _ := SessionCheck(r.Header.Get("token"))
+  wishlistCurrent, err := wishlist.FindByIdAndUserId(params["id"], userID)
 
-	if err == nil && wishlist.Destroy(&wishlistCurrent) {
-		json.NewEncoder(w).Encode(view.SetDefaultMessage("notice", "wishlist was successfully destroyed"))
-	} else {
-		json.NewEncoder(w).Encode(view.SetDefaultMessage("alert", "wishlist was not found"))
-	}
+  if err == nil && wishlist.Destroy(&wishlistCurrent) {
+    json.NewEncoder(w).Encode(view.SetDefaultMessage("notice", "wishlist was successfully destroyed"))
+  } else {
+    json.NewEncoder(w).Encode(view.SetDefaultMessage("alert", "wishlist was not found"))
+  }
 }
           </code></pre>
 

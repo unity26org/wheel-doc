@@ -34,22 +34,25 @@
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="padding:10px;15px;10px;15px;">
               <div class="row" style="width:700px;">
                 <div class="col">
-                  <h2>Install & Usage</h2>
+                  <h2>Getting Started</h2>
                   <ul>
-                    <li><a href="/install-usage.html#install">Install</a></li>
-                    <li><a href="/install-usage.html#usage">Usage</a></li>
+                    <li><a href="/getting-started.html#install">Install</a></li>
+                    <li><a href="/getting-started.html#usage">Usage</a></li>
                   </ul>
 
                   <h2>Default Resources</h2>
                   <ul>
+                    <li><a href="/default-resources.html#overview">Overview</a></li>
                     <li><a href="/default-resources.html#sessions">Sessions</a></li>
                     <li><a href="/default-resources.html#myself">Myself</a></li>
                     <li><a href="/default-resources.html#users">Users</a></li>
                   </ul>
 
-                  <h2>Custom Resources</h2>
+                  <h2>Code Generator</h2>
                   <ul>
-                    <li><a href="/custom-resources.html">Create custom resources</a></li>
+                    <li><a href="/code-generator.html#overview">Overview</a></li>
+                    <li><a href="/code-generator.html#the-new-command">The "new" Command</a></li>
+                    <li><a href="/code-generator.html#the-generate-command">The "generate" Command</a></li>
                   </ul>
 
                   <h2>Internals</h2>
@@ -93,7 +96,10 @@
 
       <div class="jumbotron">
         <h1 class="display-3">Default Resources</h1>
-        <ul style="text-align:left;">
+        <ol class="page-menu" style="text-align:left;">
+          <li>
+            <a href="#overview">Overview</a>
+          </li>
           <li>
             <a href="#sessions">Sessions</a>
           </li>
@@ -103,23 +109,47 @@
           <li>
             <a href="#users">Users</a>
           </li>
-
-        </ul>
+        </ol>
       </div>
 
       <div class="row marketing">
         <div class="col-lg-12">
 
+          <h3 class="main-header" id="overview">1&nbsp;&nbsp;Overview</h3>
+
           <p style="text-align:justify">
-          When you create a new API with <i>Wheel</i>, its generates, by default, three resources: <a href="#sessions">Session</a>, <a href="#myself">Myself</a> and <a href="#users">Users</a>. Each one has its own routes (check file /app/root/path/routes/routes.go) and access permissions (check file /app/root/path/routes/authorization.go). And they can share functionalities from theirs <i>handlers</i>, <i>models</i> and <i>views</i>.
+            When we create a new API with <i>Wheel</i>, it generates by default three resources: <a href="#sessions">Sessions</a>, <a href="#myself">Myself</a> and <a href="#users">Users</a>. Each one has its own routes (check file <i>/app/root/path/routes/routes.go</i>) and access permissions (check file <i>/app/root/path/routes/authorization.go</i>). 
           </p>
+
+          <div class="alert alert-primary" role="alert" style="text-align:justify">
+            <p><b>Quick tips!</b></p>
+            <ul>
+              <li>
+                To learn more about <i>routes</i> check the <a href="/features.html#routes">routes</a> section.
+                </li>
+              <li>
+                To learn more about <i>access permissions</i> check the <a href="/features.html#authorization">authorization</a> section.
+              </li>
+            </ul>
+          </div>
           
           <p style="text-align:justify">
-            To access the API resources, we suggest that you to use the <a href="https://www.getpostman.com/" target="_blank">Postman</a> client. But feel free to choose another similar tool.
+            Also, they share functionalities between theirs <i>models</i>, <i>views</i> and <i>handlers</i>.
+          </p>
+
+          <div class="alert alert-primary" role="alert" style="text-align:justify">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              Check the internals sections for <a href="/internals.html#models">models</a>, <a href="/internals.html#views">views</a> and <a href="/internals.html#handlers">handlers</a>.
+            </p>
+          </div>
+          
+          <p style="text-align:justify">
+            To test the API resources, we recommend you to use the <a href="https://www.getpostman.com/" target="_blank">Postman</a> client software. But feel free to choose another similar tool.
           </p>
 
           <p style="text-align:justify">
-            If you didn't change, the default credentials of the admin user are:
+            If you didn't change the default admin credentials, here they are:
           </p>
           
           <table class="table">
@@ -135,15 +165,18 @@
             </tbody>
           </table>
           
-          <div class="alert alert-warning" role="alert" style="text-align:justify">
-            <p>You are gonna to have these credentials to sign in as an admin user. Make sure you already have ran the migration.</p>
+          <div class="alert alert-warning" role="alert">
+            <p><b>Very important!</b></p>
+
+            <p style="text-align:justify">Use these credentials, above, to sign in as an <i>admin</i> user. Make sure you already have ran the migration.</p>
             
             <p>$> go run main.go -mode=migrate</p>
           </div>
           
-          <h4 id="sessions">Sessions</h4>
+          <h3 class="main-header" id="sessions">2&nbsp;&nbsp;Sessions</h3>
+
           <p style="text-align:justify">
-          Session manages user's access to the API. Its services are: <a href="#sessions-sign-up">sign up</a>, <a href="#sessions-sign-in">sign in</a>, <a href="#sessions-sign-out">sign out</a>, <a href="#sessions-password-post">password recovery</a> and <a href="#sessions-refresh">session refresh</a>. 
+          <i>Sessions</i> manage user's access to the API. Its services are: <a href="#sessions-sign-up">sign up</a>, <a href="#sessions-sign-in">sign in</a>, <a href="#sessions-sign-out">sign out</a>, <a href="#sessions-password-post">password recovery</a> and <a href="#sessions-refresh">session refresh</a>. 
           </p>
           
           <div class="card" id="sessions-sign-up">
@@ -151,7 +184,8 @@
               Sign Up
             </div>
             <div class="card-body">
-              <p>The public of the internet can sign up, but they can't sign up as admin. Only an admin can create admins. You are going to see how in <a href="#users">Users</a> section.</p>
+              <p>The public of the internet can sign up, but they can't sign up as an <i>admin</i> user.</p> 
+              <p>Only an <i>admin</i> user can create others admins. We are going to deep in details at <a href="#users">Users</a> section.</p>
 
               <p><span class="badge badge-primary">POST</span> <b>/sessions/sign_up</b></p>
 
@@ -223,7 +257,7 @@
 }
               </code></pre>
               
-              Avaiable errors are:
+              Available errors are:
               
               <ul>
                 <li>name can't be blank</li>
@@ -369,7 +403,9 @@
               Request Password Recovery
             </div>
             <div class="card-body">
-              <p>Kick off to password recovery</p>
+              <p>Kick off to password recovery.</p>
+
+              <p>The target user will receive an email with the instructions.</p>
               
               <p><span class="badge badge-primary">POST</span> <b>/sessions/password</b></p>
 
@@ -386,7 +422,7 @@
                 <tbody>
                   <tr>
                     <td>email</td>
-                    <td>User's email'</td>
+                    <td>User's email</td>
                     <td>Body</td>
                     <td>String</td>
                     <td><span class="badge badge-pill badge-success">Yes</span></td>
@@ -404,10 +440,11 @@
 }
               </code></pre>
 
-
-              <pre><code class="nohighlight">
-To avoid user enumeration vulnerability there's not error message.
-              </code></pre>
+              <div class="alert alert-warning" role="alert" style="text-align:justify">
+                <p><b>Very important!</b></p>
+                <p style="text-align:justify">To avoid <i>user enumeration vulnerability</i> there's no error message.
+                </p>
+              </div>
 
             </div>
           </div>
@@ -419,7 +456,7 @@ To avoid user enumeration vulnerability there's not error message.
               Password Recovering
             </div>
             <div class="card-body">
-              <p>Confirm password recovery</p>
+              <p>Confirms password recovery.</p>
 
               <p><span class="badge badge-warning">PUT</span> <b>/sessions/password</b></p>
 
@@ -481,7 +518,7 @@ To avoid user enumeration vulnerability there's not error message.
 }
               </code></pre>
               
-              Avaiable errors are:
+              Available errors are:
               
               <ul>
                 <li>invalid reset password token</li>
@@ -499,7 +536,7 @@ To avoid user enumeration vulnerability there's not error message.
               Session Refresh
             </div>
             <div class="card-body">
-              <p>Refresh the session. Returns a new JWT-based <i>token</i> and a new expiration time in seconds.</p>
+              <p>Refreshes the session. Returns a new JWT-based <i>token</i> and a new expiration time in seconds.</p>
 
               <p><span class="badge badge-primary">POST</span> <b>/sessions/sign_refresh</b></p>
 
@@ -552,10 +589,10 @@ To avoid user enumeration vulnerability there's not error message.
 
           <p></p>  
           
-          <h4 id="myself">Myself</h4>
+          <h3 class="main-header" id="myself">3&nbsp;&nbsp;Myself</h3>
           
           <p style="text-align:justify">
-          Myself are services whose the users can read and update their own personal data. Also users can change their password.
+          <i>Myself</i> are services whose the users can change their own password, read their own personal data and update them.
           </p>
           
           <p></p>  
@@ -691,7 +728,7 @@ To avoid user enumeration vulnerability there's not error message.
 }
               </code></pre>
               
-              Avaiable errors are:
+              Available errors are:
               
               <ul>
                 <li>name can't be blank</li>
@@ -776,7 +813,7 @@ To avoid user enumeration vulnerability there's not error message.
 }
               </code></pre>
               
-              Avaiable errors are:
+              Available errors are:
               
               <ul>
                 <li>password confirmation does not match new password</li>
@@ -788,7 +825,6 @@ To avoid user enumeration vulnerability there's not error message.
           </div>
 
           <p></p>
-
 
           <div class="card" id="sessions-sign-out">
             <div class="card-header">
@@ -845,10 +881,432 @@ To avoid user enumeration vulnerability there's not error message.
 
           <p></p>
           
-          <h4 id="users">Users</h4>
+          <h3 id="users">4&nbsp;&nbsp;Users</h3>
+
           <p style="text-align:justify">
-          ...
+          <i>Users</i> are services whose admin users can manage all users.
           </p>
+          
+          <div class="card" id="users-create">
+            <div class="card-header">
+              Create
+            </div>
+            <div class="card-body">
+              <p>Creates new users.</p>
+
+              <p><span class="badge badge-primary">POST</span> <b>/users</b></p>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>HTTP</th>
+                    <th>Type</th>
+                    <th>Mandatory</th>
+                  </tr>              
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>token</td>
+                    <td>Session token</td>
+                    <td>Header</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                  <tr>
+                    <td>name</td>
+                    <td>User's name</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                  <tr>
+                    <td>email</td>
+                    <td>User's email</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                  <tr>
+                    <td>password</td>
+                    <td>User's password</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                  <tr>
+                    <td>admin</td>
+                    <td>"true" for admin users and "false" for non admin users. Default is "false".</td>
+                    <td>Body</td>
+                    <td>Boolean</td>
+                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                  </tr>
+                  <tr>
+                    <td>locale</td>
+                    <td>User's locale. Available locales are "en" or "pt-BR"</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                </tbody>
+              </table>
+          
+              On success:
+              <pre><code class="json">
+{
+    "system_message": {
+        "type": "notice",
+        "content": "user was successfully created"
+    },
+    "user": {
+        "id": "user's ID",
+        "name": "user's name",
+        "email": "user's email",
+        "password": "user's password",
+        "admin": true or false,
+        "locale": "user's locale",
+        "created_at": "2019-08-26T23:30:26.820820046Z",
+        "updated_at": "2019-08-26T23:30:26.820820046Z"
+    }
+}
+              </code></pre>
+
+              On error:          
+              <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "user was not created"
+    },
+    "errors": [
+    ...
+    ]
+}
+              </code></pre>
+
+              Available errors are:
+              
+              <ul>
+                <li>name can't be blank</li>
+                <li>name is too long</li>
+                <li>email can't be blank</li>
+                <li>email is too long</li>
+                <li>email is invalid</li>
+                <li>email has already been taken</li>
+                <li>password is too short minimum is 8 characters</li>
+                <li>locale is invalid</li>
+              </ul>
+              
+            </div>
+          </div>
+
+          <p></p>
+
+          <div class="card" id="users-list">
+            <div class="card-header">
+              List
+            </div>
+            <div class="card-body">
+              <p>Lists registered users.</p>
+
+              <p><span class="badge badge-success">GET</span> <b>/users</b></p>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>HTTP</th>
+                    <th>Type</th>
+                    <th>Mandatory</th>
+                  </tr>              
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>token</td>
+                    <td>Session token</td>
+                    <td>Header</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                  <tr>
+                    <td>page</td>
+                    <td>Page number. Default is 1</td>
+                    <td>Body</td>
+                    <td>Integer</td>
+                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                  </tr>
+                  <tr>
+                    <td>per_page</td>
+                    <td>Entries per page. Default is 20</td>
+                    <td>Body</td>
+                    <td>Integer</td>
+                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                  </tr>
+                  <tr>
+                    <td>order</td>
+                    <td>List ordering</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                  </tr>
+                  <tr>
+                    <td>search[...]</td>
+                    <td>Example: use <i>search[name_cont]=a</i> to search users whose contain "a" in their name. More than one parameter <i>search</i> is allowed. To learn more about it, check the <a href="/features.html#search-engine">search engine</a> section.</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                  </tr>
+                </tbody>
+              </table>
+          
+              On success:
+              <pre><code class="json">
+{
+    "pagination": {
+        "current_page": 1,
+        "total_pages": 1,
+        "total_entries": 1
+    },
+    "users": [
+          ... array of users ...
+    ]
+}
+              </code></pre>
+              
+            </div>
+          </div>
+
+          <p></p>
+
+          <div class="card" id="users-show">
+            <div class="card-header">
+              Show
+            </div>
+            <div class="card-body">
+              <p>Shows one single user, per once, identified by an <i>id</i>.</p>
+
+              <p><span class="badge badge-success">GET</span> <b>/users/{id}</b></p>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>HTTP</th>
+                    <th>Type</th>
+                    <th>Mandatory</th>
+                  </tr>              
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>token</td>
+                    <td>Session token</td>
+                    <td>Header</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                </tbody>
+              </table>
+          
+              On success:
+              <pre><code class="json">
+{
+      "id": "user's ID",
+      "name": "user's name",
+      "email": "user's email",
+      "password": "user's password",
+      "admin": true or false,
+      "locale": "user's locale",
+      "created_at": "2019-08-26T23:30:26.820820046Z",
+      "updated_at": "2019-08-26T23:30:26.820820046Z"
+}
+              </code></pre>
+
+              On error:          
+              <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "user was not found"
+    }
+}
+              </code></pre>
+              
+            </div>
+          </div>
+
+          <p></p>
+          
+          <div class="card" id="sessions-sign-out">
+            <div class="card-header">
+              Update
+            </div>
+            <div class="card-body">
+              <p>Updates one single user, per once, identified by an <i>id</i>.</p>
+
+              <p><span class="badge badge-warning">PUT</span> <b>/users/{id}</b></p>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>HTTP</th>
+                    <th>Type</th>
+                    <th>Mandatory</th>
+                  </tr>              
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>token</td>
+                    <td>Session token</td>
+                    <td>Header</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                  <tr>
+                    <td>name</td>
+                    <td>User's name</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                  <tr>
+                    <td>email</td>
+                    <td>User's email</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                  <tr>
+                    <td>password</td>
+                    <td>User's password</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                  <tr>
+                    <td>admin</td>
+                    <td>"true" for admin users and "false" for non admin users. Default is "false".</td>
+                    <td>Body</td>
+                    <td>Boolean</td>
+                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                  </tr>
+                  <tr>
+                    <td>locale</td>
+                    <td>User's locale. Available locales are "en" or "pt-BR"</td>
+                    <td>Body</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                </tbody>
+              </table>
+          
+              On success:
+              <pre><code class="json">
+{
+    "system_message": {
+        "type": "notice",
+        "content": "user was successfully updated"
+    },
+    "user": {
+        "id": "user's ID",
+        "name": "user's name",
+        "email": "user's email",
+        "password": "user's password",
+        "admin": true or false,
+        "locale": "user's locale",
+        "created_at": "2019-08-26T23:30:26.820820046Z",
+        "updated_at": "2019-08-26T23:30:26.820820046Z"
+    }
+}
+              </code></pre>
+
+              On error:          
+              <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "user was not updated"
+    },
+    "errors": [
+    ...
+    ]
+}
+              </code></pre>
+
+              Available errors are:
+              
+              <ul>
+                <li>name can't be blank</li>
+                <li>name is too long</li>
+                <li>email can't be blank</li>
+                <li>email is too long</li>
+                <li>email is invalid</li>
+                <li>email has already been taken</li>
+                <li>password is too short minimum is 8 characters</li>
+                <li>locale is invalid</li>
+              </ul>
+              
+            </div>
+          </div>
+
+          <p></p>
+          
+          <div class="card" id="sessions-sign-out">
+            <div class="card-header">
+              Destroy
+            </div>
+            <div class="card-body">
+              <p>Detroys one single user, per once, identified by an <i>id</i>.</p>
+
+              <p><span class="badge badge-danger">DELETE</span> <b>/users/{id}</b></p>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>HTTP</th>
+                    <th>Type</th>
+                    <th>Mandatory</th>
+                  </tr>              
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>token</td>
+                    <td>Session token</td>
+                    <td>Header</td>
+                    <td>String</td>
+                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                </tbody>
+              </table>
+          
+              On success:
+              <pre><code class="json">
+{
+    "system_message": {
+        "type": "notice",
+        "content": "user was successfully destroyed"
+    }
+}
+              </code></pre>
+
+              On error:          
+              <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "user was not found"
+    }
+}
+              </code></pre>
+              
+            </div>
+          </div>
           
         </div>
       </div>
