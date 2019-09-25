@@ -73,13 +73,14 @@
                     <li><a href="/features.html#session-control">Session Control</a></li>
                     <li><a href="/features.html#middleware">Middleware</a></li>
                     <li><a href="/features.html#authorization">Authorization</a></li>
-                    <li><a href="/features.html#users-management">Users management</a></li>
+                    <li><a href="/features.html#users-management">Users Management</a></li>
                     <li><a href="/features.html#orm">ORM</a></li>
                     <li><a href="/features.html#migration">Migration</a></li>
-                    <li><a href="/features.html#search-engine">Search engine</a></li>
+                    <li><a href="/features.html#search-engine">Search Engine</a></li>
                     <li><a href="/features.html#pagination">Pagination</a></li>
-                    <li><a href="/features.html#i18n">I18n</a></li>
-                    <li><a href="/features.html#send-mail">Send mail</a></li>
+                    <li><a href="/features.html#ordering">Ordering</a></li>                    
+                    <li><a href="/features.html#send-mail">Send Mail</a></li>
+                    <li><a href="/features.html#i18n">Internationalization (I18n)</a></li>
                     <li><a href="/features.html#log">Log</a></li>
                   </ul>
                 </div>
@@ -820,11 +821,11 @@ $> curl -X DELETE -H 'header:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://loc
           <h3 class="main-header" id="authorization">5&nbsp;&nbsp;Authorization</h3>
           
           <p style="text-align:justify">
-            In the real-world, developers should keep some data to be manipulated for authorized users only. That's why Wheel generates the file <i>routes/authorization.go</i>. This file holds permissions to users access application resources.
+            In the real-world, developers should grant access to application, or its parts, for authorized users only. That's why Wheel generates the file <i>routes/authorization.go</i>. This file has permissions to grant users access to resources.
           </p>
           
           <p style="text-align:justify">
-            When a new CRUD is generated, Wheel generates automatically the permissions for this new CRUD but it has no restrictions, yet.
+            When a new CRUD is generated, <i>Wheel</i> generates automatically the permissions for these new resources, but it has no restrictions, yet.
           </p>
 
           <h4 class="sub-header" id="authorization-setting-permission">5.1&nbsp;&nbsp;Setting permissions</h4>
@@ -835,7 +836,7 @@ $> curl -X DELETE -H 'header:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://loc
             <ol>
               <li>Regular expression: must match to the current URL.</li>
               <li>HTTP method: must be identical to one element in array.</li>
-              <li>Role: must be identical to one element in array. Available roles are <i>public</i>, <i>signed_in</i> and <i>admin</i>. <i>Public</i> are the internt public audience. <i>Signed_in</i> are regular signed in users. <i>Admin</i> are special users with the flag <i>admin</i> setted as <i>true</i>.</li>
+              <li>Role: must be identical to one element in array. Available roles are <i>public</i>, <i>signed_in</i> and <i>admin</i>. <i>Public</i> are the internet public audience. <i>Signed_in</i> are regular signed in users. <i>Admin</i> are administrators of the application.</li>
             </ol>
             
             Let's check the permissions for <i>cars</i>.

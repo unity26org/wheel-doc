@@ -78,8 +78,9 @@
                     <li><a href="/features.html#migration">Migration</a></li>
                     <li><a href="/features.html#search-engine">Search Engine</a></li>
                     <li><a href="/features.html#pagination">Pagination</a></li>
-                    <li><a href="/features.html#i18n">I18n</a></li>
+                    <li><a href="/features.html#ordering">Ordering</a></li>                    
                     <li><a href="/features.html#send-mail">Send Mail</a></li>
+                    <li><a href="/features.html#i18n">Internationalization (I18n)</a></li>
                     <li><a href="/features.html#log">Log</a></li>
                   </ul>
                 </div>
@@ -98,10 +99,12 @@
         <h1 class="display-3">Features</h1>
         <ol class="page-menu" style="text-align:left;">
           <li>
-            <a href="#overview">Overview</a>
-          </li>
-          <li>
-            <a href="#mvc">MVC</a>
+            <a href="#mvc">MVC</a>            
+            <ul>
+              <li><a href="#mvc-model">Model</a></li>
+              <li><a href="#mvc-view">View</a></li>
+              <li><a href="#mvc-controller-handler">Controller/Handler</a></li>
+            </ul>
           </li>
           <li>
             <a href="#restful">RESTful</a>
@@ -125,16 +128,22 @@
             <a href="#orm">ORM</a>
           </li>
           <li>
+            <a href="#migration">Migration</a>
+          </li>
+          <li>
             <a href="#search-engine">Search Engine</a>
           </li>
           <li>
             <a href="#pagination">Pagination</a>
           </li>
           <li>
-            <a href="#i18n">I18n</a>
+            <a href="#ordering">Ordering</a>
           </li>
           <li>
             <a href="#send-mail">Send Mail</a>
+          </li>
+          <li>
+            <a href="#i18n">Internationalization (I18n)</a>
           </li>
           <li>
             <a href="#log">Log</a>
@@ -144,59 +153,258 @@
 
       <div class="row marketing">
         <div class="col-lg-12">
-
-          <h3 class="main-header" id="overview">1&nbsp;&nbsp;Overview</h3>
-
-          <p style="text-align:justify">
-            ...
-          </p>
-
           
-          <h3 class="main-header" id="mvc">2&nbsp;&nbsp;MVC</h3>
+          <h3 class="main-header" id="mvc">1&nbsp;&nbsp;MVC</h3>
 
           <p style="text-align:justify">
-          ...
+          MVC is a software architecture pattern which separates the application three layers: <b>M</b>odel, <b>V</b>iew and <b>C</b>ontroller. Model holds the business logic and interacts with the database, View is the layer which interacts with the users and the Controller handles the comunication between Model and View.
           </p>
-          
-          
-          <h3 class="main-header" id="restful">3&nbsp;&nbsp;RESTful</h3>
 
           <p style="text-align:justify">
-          ...
+          <i>Wheel</i> is MVC architecture based. But the <i>Controller</i> layer is called of <i>Handler</i>.
           </p>
-          
-          
-          <h3 class="main-header" id="jwt">4&nbsp;&nbsp;JWT</h3>
+
+          <h4 class="sub-header" id="mvc-model">1.1&nbsp;&nbsp;Model</h4>
 
           <p style="text-align:justify">
-          ...
+          The models on <i>Wheel</i> are inside each resource directory, which is under directory <i>app</i>. It means if your application has a resource called <i>person</i> the model is in the directory:
           </p>
           
-          <h3 class="main-header" id="session-control">5&nbsp;&nbsp;Session Control</h3>
+          <pre><code class="nohighlight">
+app/person/person_model.go
+          </code></pre>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              All models have the same suffix: <i>_model</i>
+            </p>
+          </div>
+
+          <h4 class="sub-header" id="mvc-view">1.2&nbsp;&nbsp;View</h4>
 
           <p style="text-align:justify">
-          ...
+          Just like models, views on <i>Wheel</i> are inside each resource directory, which is under directory <i>app</i>. It means if your application has a resource called <i>person</i> the view is in the directory:
           </p>
           
-          <h3 class="main-header" id="middleware">6&nbsp;&nbsp;Middleware</h3>
+          <pre><code class="nohighlight">
+app/person/person_view.go
+          </code></pre>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              All views have the same suffix: <i>_view</i>
+            </p>
+          </div>
+          
+          <h4 class="sub-header" id="mvc-controller-handler">1.3&nbsp;&nbsp;Controller/Handler</h4>
 
           <p style="text-align:justify">
-          ...
-          </p>
+          <i>Wheel</i> calls controllers as handlers. All handlers are together within the same directory <i>app/handlers</i>.</p>
           
-          <h3 class="main-header" id="authorization">7&nbsp;&nbsp;Authorization</h3>
+          <pre><code class="nohighlight">
+app/handlers/person_handler.go
+          </code></pre>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              All handlers have the same suffix: <i>_handler</i>
+            </p>
+          </div>
+          
+          <h3 class="main-header" id="restful">2&nbsp;&nbsp;RESTful</h3>
 
           <p style="text-align:justify">
-          ...
+          Wheel is based in resources. By default, each resource has its own create, read, update and destroy routes identified by an unique pair of URL and HTTP method. For example, the default routes of the resource <i>person</i> are:
           </p>
+
+          <pre><code class="go">
+  router.HandleFunc("/people", handlers.PersonList).Methods("GET")
+  router.HandleFunc("/people/{id}", handlers.PersonShow).Methods("GET")
+  router.HandleFunc("/people", handlers.PersonCreate).Methods("POST")
+  router.HandleFunc("/people/{id}", handlers.PersonUpdate).Methods("PUT")
+  router.HandleFunc("/people/{id}", handlers.PersonDestroy).Methods("DELETE")
+          </code></pre>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              See <a href="https://restfulapi.net/" target="_blank">https://restfulapi.net/</a> for mode details about REST.
+            </p>
+          </div>
           
-          <h3 class="main-header" id="users-management">8&nbsp;&nbsp;Users Management</h3>
+          <h3 class="main-header" id="jwt">3&nbsp;&nbsp;JWT</h3>
 
           <p style="text-align:justify">
-          ...
+          <b>J</b>SON <b>W</b>eb <b>T</b>okens work as credentials which grant access to resources.
+          </p>
+
+          <p style="text-align:justify">
+            <i>Wheel</i> by default generates an unique JWT for each successful sing in request. See more details on <a href="default-resources.html#sessions">Sessions</a> Default Resources section.
+          </p>
+
+          <p style="text-align:justify">
+            When you create a new project with Wheel, it generates a pair of key files. One of them is the private key and it is used to generate the JWT while siging in and the other is used to validate the JWT and grant application access for each subsequent requests. See both keys in directory <i>config/keys/</i>. 
+          </p>
+
+          <p style="text-align:justify">
+            You can generate by yourself the pair of key files. Just follow the example below:
           </p>
           
-          <h3 class="main-header" id="orm">9&nbsp;&nbsp;ORM</h3>
+          <pre><code class="nohighlight">
+$> cd /path/to/app/config/keys
+$> openssl genrsa -out app.key.rsa 2048
+$> openssl rsa -in app.key.rsa -pubout > app.key.rsa.pub
+          </code></pre>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              See <a href="https://jwt.io" target="_blank">https://jwt.io</a> for mode details about JWT.
+            </p>
+          </div>
+          
+          <h3 class="main-header" id="session-control">4&nbsp;&nbsp;Session Control</h3>
+
+          <p style="text-align:justify">
+            <i>Wheel</i> has a built-in Session Control. Check all functionalities below:
+          </p>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Definition</th>
+              </tr>              
+            </thead>
+            <tbody>
+              <tr>
+                <td><i>Sing up</i></td>
+                <td>Sign up function for internet public audience.</td>
+              </tr>
+              <tr>
+                <td><i>Sign in</i></td>
+                <td>Authenticates users with valid credentials. Returns a <i>token</i> (JWT) for use in subsequent requests.</td>
+              </tr>
+              <tr>
+                <td><i>Authorization</i></td>
+                <td>After successful authentication, authorizes (or not) requests with a valid token.</td>
+              </tr>
+              <tr>
+                <td><i>Sign Out</i></td>
+                <td>Signed in users can sign out.</td>
+              </tr>
+              <tr>
+                <td><i>Password Recovery</i></td>
+                <td>Nevermind if any user forgets password. Wheel sends internationalized email for password recovery and manages the entire process.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Two Quick tips!</b></p>
+            <p style="text-align:justify">
+              <ol>
+                <li>Check the <a href="default-resources.html#sessions">Sessions</a> item in <i>Default Resources</i> section.</li>
+                <li>You can disable any of the functions above.</li>
+              </ol>
+              
+            </p>
+          </div>
+          
+          
+          <h3 class="main-header" id="middleware">5&nbsp;&nbsp;Middleware</h3>
+
+          <p style="text-align:justify">
+            Middleware holds the functions that are executed before requests reach the handler.
+          </p>
+
+          <p style="text-align:justify">
+            Wheel generates by default two middlewares:
+            
+            <ol>
+              <li><i>loggingMiddleware</i>: this function logs all request to the application.</li>
+              <li><i>authorizeMiddleware</i>: this function handles the authorization of the application.</li>
+            </ol>
+          </p>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              Check the <a href="internals.html#middleware">Middleware</a> item in <i>Internals</i> section.
+            </p>
+          </div>
+
+                    
+          <h3 class="main-header" id="authorization">6&nbsp;&nbsp;Authorization</h3>
+
+          <p style="text-align:justify">
+          Authorization defines if requests from users has or hasn't permission to be executed. By default, <i>Wheel</i> defines three user roles: <i>public</i>, <i>signed_in</i> and <i>admin</i>.
+          </p>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Definition</th>
+              </tr>              
+            </thead>
+            <tbody>
+              <tr>
+                <td><i>public</i></td>
+                <td>Internet public audience.</td>
+              </tr>
+              <tr>
+                <td><i>signed_in</i></td>
+                <td>regular signed in users.</td>
+              </tr>
+              <tr>
+                <td><i>admin</i></td>
+                <td>administrators/managers of the application.</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <p style="text-align:justify">
+          The whole authorization proccess is executed in a <i>middleware</i> and it has two steps. First step is to identify the role of the current user. Second is to check permissions. The method <i>authorizeMiddleware</i> in <i>routes/middleware.go</i> identifies the user role and the file <i>routes/authorize.go</i> has permissions rules.
+          </p>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              Check the <a href="getting-started.html#authorization">authorization</a> example in <i>Getting Started</i> section.
+            </p>
+          </div>
+          
+          <h3 class="main-header" id="users-management">7&nbsp;&nbsp;Users Management</h3>
+
+          <p style="text-align:justify">
+          Users management are resources only allowed for <i>admin</i> users. They can:
+          <ul>
+            <li>List all users</li>
+            <li>Show a single users</li>
+            <li>Create users</li>
+            <li>Update users</li>
+            <li>Destroy users</li>
+          </ul>
+          </p>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              Check the <a href="default-resources.html#users">Users</a> item in <i>Default Resources</i> section.
+            </p>
+          </div>
+          
+          <h3 class="main-header" id="orm">8&nbsp;&nbsp;ORM</h3>
+
+          <p style="text-align:justify">
+          Wheel uses the ORM <a href="http://gorm.io" target="_blank">GORM</a> which helps to interact with the database.
+          </p>
+
+          <h3 class="main-header" id="migration">9&nbsp;&nbsp;Migration</h3>
 
           <p style="text-align:justify">
           ...
@@ -205,33 +413,214 @@
           <h3 class="main-header" id="search-engine">10&nbsp;&nbsp;Search Engine</h3>
 
           <p style="text-align:justify">
-          ...
+          The Search Engine is a powerful filter for listing data. You can filter by one or more columns in any table in the database and you can set the criteria to "is equal", "start with", "end with", "contain", "is greater than", "is less than" and others. You can do this just by sending the search parameters (or queries) in the URL.
           </p>
+
+          <p style="text-align:justify">
+            The following two examples we are assuming a database table named <i>people</i> wich contains the columns <i>name</i>, <i>email</i> and <i>birth_day</i>.
+          </p>
+
+          <p style="text-align:justify">
+            <b>First example:</b> listing people whose email is equals to "user@example.com"
+          </p>
+
+          <pre><code class="nohighlight">
+$> curl -X GET http://localhost:8081/people?search[email_eq]=user@example.com
+          </code></pre>
+
+          <p style="text-align:justify">
+            <b>Second example:</b> listing people whose name contains the letter "a" and were born after the year 1999.
+          </p>
+
+          <pre><code class="nohighlight">
+$> curl -X GET http://localhost:8081/people?search[name_cont]=a&search[birth_day_gt]=1999-12-31
+          </code></pre>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              Check the <a href="internals.html#search-engine">Search Engine</a> item in <i>Internals</i> section for complete documentation.
+            </p>
+          </div>
           
           <h3 class="main-header" id="pagination">11&nbsp;&nbsp;Pagination</h3>
 
           <p style="text-align:justify">
-          ...
+          Just like <i>Search Engine</i>, <i>Pagination</i> is a feature for listing data and they can work together.
           </p>
-          
-          <h3 class="main-header" id="i18n">12&nbsp;&nbsp;I18n</h3>
 
           <p style="text-align:justify">
-          ...
-          </p>
+            <i>Pagination</i> has two parameters:
           
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Definition</th>
+                  <th>Default</th>
+                </tr>              
+              </thead>
+              <tbody>
+                <tr>
+                  <td><i>page</i></td>
+                  <td>Page you want to see</td>
+                  <td>Default value is 1</td>
+                </tr>
+                <tr>
+                  <td><i>per_page</i></td>
+                  <td>Amount of entries per page</td>
+                  <td>Default value is 20</td>
+                </tr>
+              </tbody>
+            </table>
+          </p>
+
+          <p style="text-align:justify">
+            Example:
+          </p>
+
+          <pre><code class="nohighlight">
+$> curl -X GET http://localhost:8081/people?page=2&per_page=10
+          </code></pre>
+
+          <p style="text-align:justify">
+            Returns something like:
+          </p>
+
+          <pre><code class="json">
+{
+    "pagination": {
+        "current_page": 2,
+        "total_pages": 10,
+        "total_entries": 96
+    },
+    "movies": [
+        ...
+    ]
+}
+          </code></pre>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              Check the <a href="internals.html#pagination">Pagination</a> item in <i>Internals</i> section for complete documentation.
+            </p>
+          </div>
+          
+          <h3 class="main-header" id="ordering">12&nbsp;&nbsp;Ordering</h3>
+
+          <p style="text-align:justify">
+          <i>Ordering</i> is also a feature for listing data and can work together with <i>Search Engine</i> and <i>Pagination</i>. You can order by any SQL command.
+          </p>
+
+          <p style="text-align:justify">
+            Example:
+          </p>
+
+          <pre><code class="nohighlight">
+$> curl -X GET http://localhost:8081/people?order=birth_day%20DESC
+          </code></pre>
+
+          <div class="alert alert-warning" role="alert" style="text-align:justify">
+            <p><b>Very important!</b></p>
+            <p>The "<i>%20</i>" represents a space char for URL encode.</p>
+            
+            <p>Because of secure reasons, values for ordering are whitelisted. Each handler has, by default, its attributes (correspodent table's columns in the database) whitelisted.</p>
+          </div>
+
+          <div class="alert alert-primary" role="alert" style="text-align:justify">
+            <p><b>Quick tip!</b></p>
+            <p>
+              Check the <a href="internals.html#ordering">Ordering</a> item in <i>Internals</i> section.
+            </p>
+          </div>
+
           <h3 class="main-header" id="send-mail">13&nbsp;&nbsp;Send Mail</h3>
 
           <p style="text-align:justify">
-          ...
-          </p>
+            <i>Wheel</i> has support for sending emails. There are two scenarios where it happens:
           
-          <h3 class="main-header" id="log">14&nbsp;&nbsp;Log</h3>
+            <ol>
+              <li>After sing up</li>
+              <li>Password recovery</li>
+            </ol>
+          </p>
 
           <p style="text-align:justify">
-          ...
+            The short example to send emails is:
+          </p>
+
+          <pre><code class="go">
+  import /app/path/commons/mailer
+  
+  ...
+  
+  mailer.AddTo("Recipient Name", "recipient@email.com")
+  subject := "Hello world"
+  body := "This is a test email message"
+  go mailer.Send(subject, body, true)
+          </code></pre>
+
+          <div class="alert alert-primary" role="alert" >
+            <p><b>Quick tip!</b></p>
+            <p>
+              Check the <a href="internals.html#mailer">Mailer</a> item in <i>Internals</i> section.
+            </p>
+          </div>
+          
+          <h3 class="main-header" id="i18n">14&nbsp;&nbsp;Internationalization (I18n)</h3>
+
+          <p style="text-align:justify">
+          In previous item you learned how to use Wheel's internals to send emails. You can use internationalization to send emails using the recipient user's language.
           </p>
           
+          <div class="alert alert-warning" role="alert" style="text-align:justify">
+            <p><b>Very important!</b></p>
+            <p>To set the user's language is necessary to update the <i>locale</i> column.</p>
+          </div>          
+
+          <p style="text-align:justify">
+          The current version of Wheel has the following locales available.
+          
+          <ul>
+            <li>en</li>
+            <li>pt-BR</li>
+          </ul>
+          </p>
+
+          <p style="text-align:justify">
+            To add a new locale to your project, get the file <i>config/locales/en.yml</i> as example, translate the words/ phrases and save as "the locale code" plus <i>.yml</i>. For example, if you want to translate to french save the new locale file as <i>config/locales/fr.yml</i>. After, edit the <i>config/app.yml</i> and add to option <i>locale</i> the new locale code.
+          </p>
+                    
+          <h3 class="main-header" id="log">15&nbsp;&nbsp;Log</h3>
+
+          <p style="text-align:justify">
+            You can log the application events for auditing or debuging. Logs are showed in <i>stdout</i> and persisted in file <i>log/app.log</i>.
+          </p>
+
+          <pre><code class="go">
+  import /app/path/commons/log
+  
+  ...
+  
+  log.Info.Println("Hello World!")
+          </code></pre>
+          
+          <p style="text-align:justify">
+            The function <i>Info</i> from package <i>log</i> is nothing but a classification for the event. Events classes are:
+            
+            <ul>
+              <li>Debug</li>
+              <li>Info</li>
+              <li>Warn</li>
+              <li>Error</li>
+              <li>Fatal</li>
+            </ul>
+            
+            Each one has with its own color to you quickly identify the event class.
+          </p>
+          
+            
         </div>
       </div>
 

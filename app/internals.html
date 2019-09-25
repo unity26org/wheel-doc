@@ -73,13 +73,14 @@
                     <li><a href="/features.html#session-control">Session Control</a></li>
                     <li><a href="/features.html#middleware">Middleware</a></li>
                     <li><a href="/features.html#authorization">Authorization</a></li>
-                    <li><a href="/features.html#users-management">Users management</a></li>
+                    <li><a href="/features.html#users-management">Users Management</a></li>
                     <li><a href="/features.html#orm">ORM</a></li>
                     <li><a href="/features.html#migration">Migration</a></li>
-                    <li><a href="/features.html#search-engine">Search engine</a></li>
+                    <li><a href="/features.html#search-engine">Search Engine</a></li>
                     <li><a href="/features.html#pagination">Pagination</a></li>
-                    <li><a href="/features.html#i18n">I18n</a></li>
-                    <li><a href="/features.html#send-mail">Send mail</a></li>
+                    <li><a href="/features.html#ordering">Ordering</a></li>                    
+                    <li><a href="/features.html#send-mail">Send Mail</a></li>
+                    <li><a href="/features.html#i18n">Internationalization (I18n)</a></li>
                     <li><a href="/features.html#log">Log</a></li>
                   </ul>
                 </div>
@@ -109,6 +110,9 @@
           <li>
             <a href="#handler-controller">Handler (Controller)</a>
           </li>
+          <li>
+            <a href="#mailer">Mailer</a>
+          </li>
         </ol>
       </div>
 
@@ -136,13 +140,63 @@
           </p>
           
           
-          <h3 class="main-header" id="handler-controller">4&nbsp;&nbsp;Handler (Controller)</h3>
+          <h3 class="main-header" id="handler-controller">4&nbsp;&nbsp;Controller/Handler</h3>
 
           <p style="text-align:justify">
           ...
           </p>
           
+          <h3 class="main-header" id="mailer">5&nbsp;&nbsp;Mailer</h3>
           
+          <p style="text-align:justify">
+            Check all available function in package <i>mailer</i> below:
+          </p>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Function</th>
+                <th>Definition</th>
+              </tr>              
+            </thead>
+            <tbody>
+              <tr>
+                <td>SetFrom(name string, tEmail string)<td>
+                <td><td>
+              </tr>
+              <tr>
+                <td>AddTo(name string, tEmail string)<td>
+                <td><td>
+              </tr>
+              <tr>
+                <td>AddCc(name string, tEmail string)<td>
+                <td><td>
+              </tr>
+              <tr>
+                <td>AddBcc(name string, tEmail string)<td>
+                <td><td>
+              </tr>
+              <tr>
+                <td>ResetAll()<td>
+                <td><td>
+              </tr>
+              <tr>
+                <td>Send(subject string, body string, html bool)<td>
+                <td><td>
+              </tr>
+              <tr>
+                <td>Reciepts() []string<td>
+                <td><td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 class="main-header" id="ordering">6&nbsp;&nbsp;Search Engine</h3>
+
+          <h3 class="main-header" id="ordering">7&nbsp;&nbsp;Ordering</h3>
+
+          <h3 class="main-header" id="ordering">8&nbsp;&nbsp;Pagination</h3>
+
         </div>
       </div>
 
