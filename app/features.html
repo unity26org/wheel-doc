@@ -401,25 +401,80 @@ $> openssl rsa -in app.key.rsa -pubout > app.key.rsa.pub
           <h3 class="main-header" id="orm">8&nbsp;&nbsp;ORM</h3>
 
           <p style="text-align:justify">
-          Wheel uses the ORM <a href="http://gorm.io" target="_blank">GORM</a> which helps to interact with the database.
+          Wheel uses the <a href="http://gorm.io" target="_blank">GORM</a> which helps to interact with the database.
           </p>
 
           <h3 class="main-header" id="migration">9&nbsp;&nbsp;Migration</h3>
 
           <p style="text-align:justify">
-          ...
+          Migration is a feature of <a href="http://gorm.io/docs/" target="_blank">GORM</a>. Because of it, you don't need to write SQL to change the database schema.
           </p>
+
+          <p style="text-align:justify">
+          <i>Wheel</i> creates the file <i>db/schema/migrate.go</i> when generates a new project. The default generated migration creates the <i>user's table</i>, the admin user, the <i>session's table</i> and theirs relationship.
+          </p>          
+          
+          <pre><code class="go">
+  package schema
+
+  import (
+    "github.com/adilsonchacon/car_store/app/user"
+    "github.com/adilsonchacon/car_store/commons/app/model"
+    "github.com/adilsonchacon/car_store/commons/crypto"
+    "github.com/adilsonchacon/car_store/db/entities"
+  )
+
+  func Migrate() {
+    model.Db.AutoMigrate(&entities.User{})
+
+    _, err := user.FindByEmail("user@example.com")
+    if err != nil {
+      model.Db.Create(&entities.User{Name: "User Name", Email: "user@example.com", Password: crypto.SetPassword("!Secret.123!"), Locale: "en", Admin: true})
+    }
+
+    model.Db.AutoMigrate(&entities.Session{})
+    model.Db.Model(&entities.Session{}).AddForeignKey("user_id", "users(id)", "NO ACTION", "NO ACTION")
+  }
+          </code></pre>
+
+          <p style="text-align:justify">
+          <i>Wheel</i> updates the file <i>db/schema/migrate.go</i> when you create a new CRUD.
+          </p>                    
+
+          <pre><code class="nohighlight">
+$> wheel generate scaffold person name:string email:string birth_day:datetime
+          </code></pre>
+
+          <p style="text-align:justify">
+            It will add to <i>db/schema/migrate.go</i> file the following line:
+          </p>
+          
+          <pre><code class="go">
+  ...
+  
+    model.Db.AutoMigrate(&entities.Person{})
+  
+  }
+          </code></pre>
+
+          <div class="alert alert-primary" role="alert" style="text-align:justify">
+            <p><b>Quick tip!</b></p>
+
+            <p>
+              Click <a href="http://gorm.io/docs/migration.html" target="_blank">here</a> to check GORM migration documentation.
+            </p>
+          </div>
           
           <h3 class="main-header" id="search-engine">10&nbsp;&nbsp;Search Engine</h3>
 
           <p style="text-align:justify">
-          The Search Engine is a powerful filter for listing data. You can filter by one or more columns in any table in the database and you can set the criteria to "is equal", "start with", "end with", "contain", "is greater than", "is less than" and others. You can do this just by sending the search parameters (or queries) in the URL.
+          The Search Engine is a powerful filter for listing data. You can filter by one or more columns of a table in the database and specify the criteria. In the request URL, you need to set the <i>search</i> paramenter as a hash. The key of each element in hash is composed by the name of the column and the criterion separated by an underline "_".
           </p>
 
           <p style="text-align:justify">
-            The following two examples we are assuming a database table named <i>people</i> wich contains the columns <i>name</i>, <i>email</i> and <i>birth_day</i>.
+            The following two examples we are assuming a database table named <i>people</i> and it has the columns <i>name</i>, <i>email</i> and <i>birth_day</i>.
           </p>
-
+          
           <p style="text-align:justify">
             <b>First example:</b> listing people whose email is equals to "user@example.com"
           </p>
@@ -429,24 +484,156 @@ $> curl -X GET http://localhost:8081/people?search[email_eq]=user@example.com
           </code></pre>
 
           <p style="text-align:justify">
-            <b>Second example:</b> listing people whose name contains the letter "a" and were born after the year 1999.
+            It will run the following SQL:
+          </p>
+
+          <pre><code class="sql">
+  SELECT * FROM people WHERE email = "user@example.com"
+          </code></pre>
+
+          <p style="text-align:justify">
+            <b>Second example:</b> listing people whose emails are in a list.
+          </p>
+
+          <pre><code class="nohighlight">
+$> curl -X GET http://localhost:8081/people?search[email_in]=user@example.com,test@domain.com
+          </code></pre>
+
+          <p style="text-align:justify">
+            It will run the following SQL:
+          </p>
+
+          <pre><code class="sql">
+  SELECT * FROM people WHERE email IN ("user@example.com", "test@domain.com")
+          </code></pre>
+
+          <p style="text-align:justify">
+            <b>Third example:</b> listing people whose name contains the letter "a" and were born after the year 1999.
           </p>
 
           <pre><code class="nohighlight">
 $> curl -X GET http://localhost:8081/people?search[name_cont]=a&search[birth_day_gt]=1999-12-31
           </code></pre>
 
-          <div class="alert alert-primary" role="alert">
-            <p><b>Quick tip!</b></p>
-            <p style="text-align:justify">
-              Check the <a href="internals.html#search-engine">Search Engine</a> item in <i>Internals</i> section for complete documentation.
-            </p>
-          </div>
+          <p style="text-align:justify">
+            It will run the following SQL:
+          </p>
+
+          <pre><code class="sql">
+  SELECT * FROM people WHERE name ILIKE "%a%" AND birth_day > '1999-12-31'
+          </code></pre>
+
+          <p style="text-align:justify">
+            All the availables criteria you can find below:
+          </p>
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Criterion</th>
+                <th>Mean</th>
+                <th>SQL</th>
+              </tr>
+            </thead>
+        
+            <tbody>
+              <tr>
+                <td>eq</td>
+                <td>is equal to</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] = '[VALUE]'</td>
+              </tr>
+              <tr>
+                <td>noteq</td>
+                <td>is not equal to</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] <> '[VALUE]'</td>
+              </tr>
+              <tr>
+                <td>cont</td>
+                <td>contains</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] ILIKE '%[VALUE]%'</td>
+              </tr>
+              <tr>
+                <td>notcont</td>
+                <td>does not contain</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] NOT ILIKE '%[VALUE]%'</td>
+              </tr>
+              <tr>
+                <td>start</td>
+                <td>starts with</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] ILIKE '[VALUE]%'</td>
+              </tr>
+              <tr>
+                <td>notstart</td>
+                <td>does not start with</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] NOT ILIKE '[VALUE]%'</td>
+              </tr>
+              <tr>
+                <td>end</td>
+                <td>ends with</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] ILIKE '%[VALUE]'</td>
+              </tr>
+              <tr>
+                <td>notend</td>
+                <td>does not end with</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] NOT ILIKE '%[VALUE]'</td>
+              </tr>
+              <tr>
+                <td>in</td>
+                <td>includes</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] IN ([VALUE_1], [VALUE_2], ... , [VALUE_N])</td>
+              </tr>
+              <tr>
+                <td>notin</td>
+                <td>does not include</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] NOT IN ([VALUE_1], [VALUE_2], ... , [VALUE_N])</td>
+              </tr>
+              <tr>
+                <td>gt</td>
+                <td>great than</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] > [VALUE]</td>
+              </tr>
+              <tr>
+                <td>gteq</td>
+                <td>great than or equal</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] >= [VALUE]</td>
+              </tr>
+              <tr>
+                <td>lt</td>
+                <td>less than</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] < [VALUE]</td>
+              </tr>
+              <tr>
+                <td>lteq</td>
+                <td>less than or equal</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] <= [VALUE]</td>
+              </tr>
+              <tr>
+                <td>null</td>
+                <td>is null</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] IS NULL</td>
+              </tr>
+              <tr>
+                <td>notnull</td>
+                <td>is not null</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] IS NOT NULL</td>
+              </tr>
+              <tr>
+                <td>true</td>
+                <td>is true</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] = 't'</td>
+              </tr>
+              <tr>
+                <td>false</td>
+                <td>is false</td>
+                <td>SELECT * FROM [TABLE] WHERE [COLUMN] = 'f'</td>
+              </tr>
+            </tbody>
+          </table>
           
           <h3 class="main-header" id="pagination">11&nbsp;&nbsp;Pagination</h3>
 
           <p style="text-align:justify">
-          Just like <i>Search Engine</i>, <i>Pagination</i> is a feature for listing data and they can work together.
+          Just like <i>Search Engine</i>, <i>Pagination</i> is a feature for listing data.
           </p>
 
           <p style="text-align:justify">
@@ -500,10 +687,15 @@ $> curl -X GET http://localhost:8081/people?page=2&per_page=10
 }
           </code></pre>
 
-          <div class="alert alert-primary" role="alert">
-            <p><b>Quick tip!</b></p>
-            <p style="text-align:justify">
-              Check the <a href="internals.html#pagination">Pagination</a> item in <i>Internals</i> section for complete documentation.
+          <div class="alert alert-primary" role="alert" style="text-align:justify">
+            <p><b>Quick tips!</b></p>
+            
+            <p>
+              Pagination, Search Engine and Ordering (item below) can work together.
+            </p>
+            
+            <p>
+              Check the <a href="internals.html#pagination">Pagination</a> item in <i>Internals</i> section for details.
             </p>
           </div>
           
@@ -529,9 +721,14 @@ $> curl -X GET http://localhost:8081/people?order=birth_day%20DESC
           </div>
 
           <div class="alert alert-primary" role="alert" style="text-align:justify">
-            <p><b>Quick tip!</b></p>
+            <p><b>Quick tips!</b></p>
+
             <p>
-              Check the <a href="internals.html#ordering">Ordering</a> item in <i>Internals</i> section.
+              Pagination, Search Engine and Ordering can work together.
+            </p>
+
+            <p>
+              Check the <a href="internals.html#ordering">Ordering</a> item in <i>Internals</i> section for details.
             </p>
           </div>
 

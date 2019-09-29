@@ -1092,7 +1092,7 @@ import strconv
 ...
 
 currentUserID, _ := SessionCheck(r.Header.Get("token"))
-normalizedParams["user_id_eq"] = strconv.FormatUint(uint64(currentUserID), 10)
+criteria["user_id_eq"] = strconv.FormatUint(uint64(currentUserID), 10)
           </code></pre>
           
           <p style="text-align:justify">
@@ -1102,7 +1102,7 @@ normalizedParams["user_id_eq"] = strconv.FormatUint(uint64(currentUserID), 10)
           <div class="alert alert-warning" role="alert">
             <p><b>Very important!</b></p>
             <p style="text-align:justify">
-              The line <i>normalizedParams["user_id_eq"] = strconv.FormatUint(uint64(userID), 10)</i> means we are going to use Wheel's built in <i>search engine</i>. And it goes to search on database registers of the specific user. 
+              The line <i>criteria["user_id_eq"] = strconv.FormatUint(uint64(userID), 10)</i> means we are going to use Wheel's built in <i>search engine</i>. And it goes to search on database registers of the specific user. 
             </p>
           </div>
 
@@ -1129,12 +1129,12 @@ func WishlistList(w http.ResponseWriter, r *http.Request) {
   w.Header().Set("Content-Type", "application/json")
 
   order := wishlistSanitizeOrder(r.FormValue("order"))
-  normalizedParams := handler.NormalizeUrlQueryParams("search", r.URL.Query())
+  criteria := handler.QueryParamsToMapCriteria("search", r.URL.Query())
   // Add these two lines below
   userID, _ := SessionCheck(r.Header.Get("token"))
-  normalizedParams["user_id_eq"] = strconv.FormatUint(uint64(userID), 10)
+  criteria["user_id_eq"] = strconv.FormatUint(uint64(userID), 10)
 
-  wishlistList, page, pages, entries = wishlist.Paginate(normalizedParams, order, r.FormValue("page"), r.FormValue("per_page"))
+  wishlistList, page, pages, entries = wishlist.Paginate(criteria, order, r.FormValue("page"), r.FormValue("per_page"))
 
   for i = 0; i < len(wishlistList); i++ {
     wishlistJsons = append(wishlistJsons, wishlist.SetJson(wishlistList[i]))
