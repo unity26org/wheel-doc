@@ -10,7 +10,7 @@
     <!-- Place favicon.ico in the root directory -->
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="node_modules/highlightjs/styles/railscasts.css" type="text/css" />
+    <link rel="stylesheet" href="node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -57,9 +57,12 @@
 
                   <h2>Internals</h2>
                   <ul>
+                    <li><a href="/internals.html#overview">Overview</a></li>
                     <li><a href="/internals.html#model">Model</a></li>
                     <li><a href="/internals.html#view">View</a></li>
                     <li><a href="/internals.html#handlers">Handlers (Controllers)</a></li>
+                    <li><a href="/internals.html#config">Config</a></li>
+                    <li><a href="/internals.html#others">Others</a></li>
                   </ul>
 
                 </div>
@@ -144,7 +147,6 @@ Usage:
                                            # When a handler "attributes" are functions inside handler.
                                            
 Options:
-  -R, [--skip-default-resources]           # Skip default resources
   -G, [--skip-git]                         # Skip .gitignore file
 
 More:
@@ -317,7 +319,7 @@ go run main.go --help
             If you have questions right now, in the followings sub-sections we are going to see by examples how the <i>generate command</i> workds.
           </p>
 
-          <h4 id="scaffold">3.1&nbsp;&nbsp;Scaffold</h4>
+          <h4 class="sub-header" id="scaffold">3.1&nbsp;&nbsp;Scaffold</h4>
 
           <p style="text-align:justify">
            <i>Scaffold</i> generates a full set of code for model, view, handler, routes and authorization.
@@ -362,7 +364,7 @@ Generating new CRUD...
 $> go run main.go -mode=migrate
           </code></pre>
           
-          <h4 id="model">3.2&nbsp;&nbsp;Model</h4>
+          <h4 class="sub-header" id="model">3.2&nbsp;&nbsp;Model</h4>
 
           <p style="text-align:justify">
            <i>Model</i> manages the data and the rules of the application. This <i>subject</i> generates the <i>model</i> and database schema defined by the <i>attributes</i>.
@@ -403,7 +405,7 @@ Generating new CRUD...
 $> go run main.go -mode=migrate
           </code></pre>
                     
-          <h4 id="entity">3.3&nbsp;&nbsp;Entity</h4>
+          <h4 class="sub-header" id="entity">3.3&nbsp;&nbsp;Entity</h4>
 
           <p style="text-align:justify">
            <i>Entity</i> generates the representation of the table in the database without the <i>model</i>.
@@ -443,7 +445,7 @@ Generating new CRUD...
 $> go run main.go -mode=migrate
           </code></pre>
           
-          <h4 id="handler">3.4&nbsp;&nbsp;Handler</h4>
+          <h4 class="sub-header" id="handler">3.4&nbsp;&nbsp;Handler</h4>
 
           <p style="text-align:justify">
            <i>Handler</i> is the controller of the MVC architecture. This <i>subject</i> generates just a single <i>handler</i> file with the functions defined by the <i>attributes</i>.

@@ -10,7 +10,7 @@
     <!-- Place favicon.ico in the root directory -->
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="node_modules/highlightjs/styles/railscasts.css" type="text/css" />
+    <link rel="stylesheet" href="node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -57,9 +57,12 @@
 
                   <h2>Internals</h2>
                   <ul>
+                    <li><a href="/internals.html#overview">Overview</a></li>
                     <li><a href="/internals.html#model">Model</a></li>
                     <li><a href="/internals.html#view">View</a></li>
                     <li><a href="/internals.html#handlers">Handlers (Controllers)</a></li>
+                    <li><a href="/internals.html#config">Config</a></li>
+                    <li><a href="/internals.html#others">Others</a></li>
                   </ul>
 
                 </div>
@@ -136,6 +139,8 @@
             <a href="#authorization">Authorization</a>
             <ul>
               <li><a href="#authorization-setting-permission">Setting permissions</a></li>
+              <li><a href="#authorization-unauthorized">Error 401 - Unauthorized</a></li>
+              <li><a href="#authorization-forbidden">Error 403 - Forbidden</a></li>
             </ul>
           </li>
           <li>
@@ -242,7 +247,7 @@ go run main.go --help
           </div>
 
           <h4 class="sub-header" id="usage-file-system">2.2&nbsp;&nbsp;File System</h4>
-
+          
           <table class="table">
             <thead>
               <tr>
@@ -280,18 +285,17 @@ go run main.go --help
 
           <h4 class="sub-header" id="usage-configure">2.3&nbsp;&nbsp;Configure</h4>
 
-          <p style="text-align:justify"><b>Database</b></p>
+          <h5 class="resource-title">Database</h5>
 
           <p style="text-align:justify">Currently, Wheel has support only for Postgresql. Edit <i>config/database.yml</i> and set up your database connection.</p>
 
-          <p style="text-align:justify"><b>Email</b></p>
+          <h5 class="resource-title">Email</h5>
 
           <p style="text-align:justify">Edit <i>config/email.yml</i> and set up with your send mail account.</p>
 
-          <p style="text-align:justify"><b>Application</b></p>
+          <h5 class="resource-title">Application</h5>
 
           <p style="text-align:justify">Edit <i>config/app.yml</i> and set the following options:</p>
-
 
           <table class="table">
             <thead>
@@ -332,7 +336,7 @@ go run main.go --help
             </tbody>
           </table>
 
-          <p style="text-align:justify"><b>Locales</b></p>
+          <h5 class="resource-title">Locales</h5>
 
           <p style="text-align:justify">Available locales files that contains words and phrases for internacionalization. You can add your own locales files, but remember to add to <i>config/app.yml</i> configuration file first.</p>
 
@@ -641,7 +645,7 @@ func IsValid(car *entities.Car) (bool, []error) {
   
 	// write your validation code here
 	// if CONDITION {
-	//    errs = append(errs, errors.New("a error message"))
+	//    errs = append(errs, errors.New("an error message"))
 	// }
 
 	return (len(errs) == 0), errs
@@ -783,7 +787,7 @@ $> curl -X POST -F 'email=user@example.com' -F 'password=!Secret.123!'  http://l
           <div class="alert alert-warning" role="alert">
             <p><b>Very important!</b></p>
             <p style="text-align:justify">
-              To identify the user, you need to send this returned <i>token</i> in the header of subsequent requests. And this <i>token</i> expires. The returned field <i>expires</i> is the time to live of the <i>token</i> in seconds.
+              To identify the user, you need to send this returned <i>token</i> in the HTTP header of subsequent requests. But this <i>token</i> expires. The returned field <i>expires</i> is the time to live of the <i>token</i> in seconds. To renew the session getting a new token and expiration time see <a href="/default-resources.html#sessions-refresh">Session Refresh</a> in Default Resources section.
             </p>
           </div>
 
@@ -911,8 +915,10 @@ $> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'descripti
 }
           </code></pre>
 
+          <h4 class="sub-header" id="authorization-unauthorized">5.2&nbsp;&nbsp;Error 401 - Unauthorized</h4>
+
           <p style="text-align:justify">
-            From now, if you don't include the valid token in the header of the request it will returns:
+            Following the previous item, if you do not include a valid token in the request header it will return the 401 HTTP error:
           </p>          
 
           <pre><code class="nohighlight">
@@ -923,7 +929,26 @@ $> curl -X POST  -F 'description=Ford' -F 'year=2016' -F 'price=15000.00' -F 'av
 {
     "system_message": {
         "type": "alert",
-        "content": "404 not found"
+        "content": "401 Unauthorized"
+    }
+}
+          </code></pre>
+
+          <h4 class="sub-header" id="authorization-forbidden">5.3&nbsp;&nbsp;Error 403 - Forbidden</h4>
+
+          <p style="text-align:justify">
+            If a <i>signed_in</i> user (not <i>admin</i>) tries to reach the same resource above it will return the 403 HTTP error:
+          </p>          
+
+          <pre><code class="nohighlight">
+$> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'description=Ford' -F 'year=2016' -F 'price=15300.00' -F 'available=true' http://localhost:8081/cars
+          </code></pre>
+
+          <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "403 Forbidden"
     }
 }
           </code></pre>

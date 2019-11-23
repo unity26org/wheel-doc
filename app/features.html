@@ -10,7 +10,7 @@
     <!-- Place favicon.ico in the root directory -->
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="node_modules/highlightjs/styles/railscasts.css" type="text/css" />
+    <link rel="stylesheet" href="node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -57,9 +57,12 @@
 
                   <h2>Internals</h2>
                   <ul>
+                    <li><a href="/internals.html#overview">Overview</a></li>
                     <li><a href="/internals.html#model">Model</a></li>
                     <li><a href="/internals.html#view">View</a></li>
                     <li><a href="/internals.html#handlers">Handlers (Controllers)</a></li>
+                    <li><a href="/internals.html#config">Config</a></li>
+                    <li><a href="/internals.html#others">Others</a></li>
                   </ul>
 
                 </div>
@@ -329,13 +332,6 @@ $> openssl rsa -in app.key.rsa -pubout > app.key.rsa.pub
               <li><i>authorizeMiddleware</i>: this function handles the authorization of the application.</li>
             </ol>
           </p>
-
-          <div class="alert alert-primary" role="alert">
-            <p><b>Quick tip!</b></p>
-            <p style="text-align:justify">
-              Check the <a href="internals.html#middleware">Middleware</a> item in <i>Internals</i> section.
-            </p>
-          </div>
 
                     
           <h3 class="main-header" id="authorization">6&nbsp;&nbsp;Authorization</h3>
@@ -786,7 +782,7 @@ $> curl -X GET http://localhost:8081/people?order=birth_day%20DESC
           </p>
 
           <p style="text-align:justify">
-            To add a new locale to your project, get the file <i>config/locales/en.yml</i> as example, translate the words/ phrases and save as "the locale code" plus <i>.yml</i>. For example, if you want to translate to french save the new locale file as <i>config/locales/fr.yml</i>. After, edit the <i>config/app.yml</i> and add to option <i>locale</i> the new locale code.
+            To add a new locale to your project, get the file <i>config/locales/en.yml</i> as example, translate the words/phrases and save as "the locale code" plus <i>.yml</i>. For example, if you want to translate to french save the new locale file as <i>config/locales/fr.yml</i>. After, edit the <i>config/app.yml</i> and add to option <i>locale</i> the new locale code.
           </p>
                     
           <h3 class="main-header" id="log">15&nbsp;&nbsp;Log</h3>

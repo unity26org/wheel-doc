@@ -10,7 +10,7 @@
     <!-- Place favicon.ico in the root directory -->
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="node_modules/highlightjs/styles/railscasts.css" type="text/css" />
+    <link rel="stylesheet" href="node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -57,9 +57,12 @@
 
                   <h2>Internals</h2>
                   <ul>
+                    <li><a href="/internals.html#overview">Overview</a></li>
                     <li><a href="/internals.html#model">Model</a></li>
                     <li><a href="/internals.html#view">View</a></li>
                     <li><a href="/internals.html#handlers">Handlers (Controllers)</a></li>
+                    <li><a href="/internals.html#config">Config</a></li>
+                    <li><a href="/internals.html#others">Others</a></li>
                   </ul>
 
                 </div>
@@ -103,6 +106,11 @@
           </li>
           <li>
             <a href="#model">Model</a>
+            <ul>
+              <li><a href="#search-engine">Search Engine</a></li>
+              <li><a href="#pagination">Pagination</a></li>
+              <li><a href="#ordering">Ordering</a></li>
+            </ul>
           </li>
           <li>
             <a href="#view">View</a>
@@ -111,7 +119,17 @@
             <a href="#handler-controller">Handler (Controller)</a>
           </li>
           <li>
-            <a href="#mailer">Mailer</a>
+            <a href="#config">Config</a>
+          </li>
+          <li>
+            <a href="#others">Others</a>
+            <ul>
+              <li><a href="#log">Log</a></li>
+              <li><a href="#mailer">Mailer</a></li>
+              <li><a href="#i18n">Internationalization (I18n)</a></li>
+              <li><a href="#crypto">Crypto</a></li>
+              <li><a href="#conversor">Conversor</a></li>
+            </ul>
           </li>
         </ol>
       </div>
@@ -122,80 +140,681 @@
           <h3 class="main-header" id="overview">1&nbsp;&nbsp;Overview</h3>
 
           <p style="text-align:justify">
-            ...
+            In this section you will find the documentation for internal functions. When you generate a new API or CRUD if you read the generated code you will face these functions below. Here, you can learn more about them.
           </p>
 
-          
           <h3 class="main-header" id="model">2&nbsp;&nbsp;Model</h3>
 
+          <h5 class="resource-title">var Db</h5>
+          <pre><code class="go">
+var Db *gorm.DB
+          </code></pre>          
+
           <p style="text-align:justify">
-          ...
+            Global var to access database.
+          </p>
+
+          <h5 class="resource-title">var Errors</h5>
+          <pre><code class="go">
+var Errors []string
+          </code></pre>          
+
+          <p style="text-align:justify">
+            Global var to return errors when creating or updating data.
+          </p>
+
+          <h5 class="resource-title">type Query</h5>
+          <pre><code class="go">
+type Query struct {
+	Db    *gorm.DB
+	Table interface{}
+}
+          </code></pre>          
+
+          <p style="text-align:justify">
+            Structure used to build advanced queries, such as <a href="#search-engine">Search Engine</a>, <a href="#pagination">Pagination</a> and <a href="#ordering">Ordering</a>. See a full example below:
+          </p>
+
+          <pre><code class="go">
+var people []entities.Person
+var person entities.Person
+
+q := model.Query{Db: model.Db, Table: &person}
+q.SearchEngine(criteria)
+q.Ordering(order)
+currentPage, totalPages, totalEntries := q.Pagination(page, perPage)
+
+q.Db.Find(&people)
+
+return people, currentPage, totalPages, totalEntries
+          </code></pre>          
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              At the example above, we are using <i>SearchEngine</i>, <i>Pagination</i> and <i>Ordering</i> together. But they are independent from each other, so feel free to use them individually.
+            </p>
+          </div>
+
+          <h5 class="resource-title">func Connect</h5>
+          <pre><code class="go">
+func Connect()
+          </code></pre>          
+
+          <p style="text-align:justify">
+            Connects to database properly configured in file <i>config/database.yml</i>.
           </p>
           
+          <h5 class="resource-title">func Disconnect</h5>
+          <pre><code class="go">
+func Disconnect()
+          </code></pre>          
+
+          <p style="text-align:justify">
+            Disconnects from database.
+          </p>
+
+          <h5 class="resource-title">func Connect</h5>
+          <pre><code class="go">
+func TableName(table interface{}) string
+          </code></pre>          
+
+          <p style="text-align:justify">
+            Returns the name of the table in database as <i>string</i>.             
+          </p>
+
+          <p style="text-align:justify">
+            The parameter <i>table</i> is an <i>entity</i>. You can check all available entities in directory <i>db/entities/</i>.
+          </p>
+
+          <p style="text-align:justify">
+            The example below will print: <br>
+            <i>[INFO] users</i>
+          </p>
+
+          <pre><code class="go">
+tableName := model.TableName(entities.User)
+log.Info.Println(tableName)
+          </code></pre>          
+
+          <h5 class="resource-title">func GetColumnType</h5>
+          <pre><code class="go">
+func GetColumnType(table interface{}, columnName string) (string, error)
+          </code></pre>          
+
+          <p style="text-align:justify">
+            Returns the type of any column from a table as <i>string</i>. 
+          </p>
+            
+          <p style="text-align:justify">
+            The parameter <i>table</i> is an <i>entity</i>. You can check all available entities in directory <i>db/entities/</i>.
+          </p>
+
+          <p style="text-align:justify">
+            The example below will print: <br>
+            <i>[INFO] string</i>
+          </p>
+
+          <pre><code class="go">
+columnType := model.GetColumnType(entities.User, 'email')
+log.Info.Println(columnType)
+          </code></pre>
+
+          <h5 class="resource-title">func GetColumnValue</h5>
+          <pre><code class="go">
+func GetColumnValue(table interface{}, columnName string) (interface{}, error)
+          </code></pre>          
+
+          <p style="text-align:justify">
+            Returns the value of any column from a table as <i>interface{}</i>. 
+          </p>
+
+          <p style="text-align:justify">
+            The parameter <i>table</i> is an <i>entity</i>. You can check all available entities in directory <i>db/entities/</i>.
+          </p>
+
+          <h5 class="resource-title">func SetColumnValue</h5>
+          <pre><code class="go">
+func SetColumnValue(table interface{}, columnName string, value string) error
+          </code></pre>          
+
+          <p style="text-align:justify">
+            Sets a value to a column of a specific table. 
+          </p>
+
+          <p style="text-align:justify">
+            The parameter <i>table</i> is an <i>entity</i>. You can check all available entities in directory <i>db/entities/</i>. 
+          </p>
+
+          <p style="text-align:justify">
+            The parameter <i>value</i> is a <i>string</i> type, even if you are setting a value to a non-string column. Don't worry, this function will convert properly the value to column's type.
+          </p>
+
+          <h5 class="resource-title">func ColumnsFromTable</h5>
+          <pre><code class="go">
+func ColumnsFromTable(table interface{}, all bool) []string
+          </code></pre>
+
+          <p style="text-align:justify">
+            Returns an array of strings with all columns and relationships of the table in the database. 
+          </p>
+
+          <p style="text-align:justify">
+            The parameter <i>table</i> is an <i>entity</i>. You can check all available entities in directory <i>db/entities/</i>. 
+          </p>
+
+          <p style="text-align:justify">
+            The parameter <i>all</i> is a <i>boolean</i>. If setted as <i>true</i>, returns all columns and relationships. If setted as <i>false</i>, returns all columns only.  
+          </p>
+
+<!-- sub-models -->
+          <h4 class="sub-header" id="search-engine">2.1&nbsp;&nbsp;Search Engine</h4>
+
+          <h5 class="resource-title">func (q *Query) SearchEngine</h5>
+          <pre><code class="go">
+func (q *Query) SearchEngine(criteria map[string]string))
+          </code></pre>
+
+          <p style="text-align:justify">
+            Builds the query to filter records by GORM library. To learn more about GORM click <a href="http://gorm.io" target="blank">here</a>.
+          </p>
+
+          <h5 class="resource-title">func Criteria</h5>
+          <pre><code class="go">
+func Criteria(criteria map[string]string, logic string) (string, []interface{})
+          </code></pre>
+
+          <p style="text-align:justify">
+            Extract the criteria parameter and tranformt it as SQL prepared statements (string) and pushes the values into an array of interfaces. This function is called internally by the <a href="#search-engine">SeachEngine</a> function.
+          </p>
+
+          <p style="text-align:justify">
+            The example below will print: <br>
+            <i>[INFO] name ILIKE ? AND email ILIKE ?</i><br>
+            <i>[INFO] {"%a%" "%com"}</i>
+          </p>
+                    
+          <pre><code class="go">
+  var m map[string]string
+  m = make(map[string]string)
+  m["name_cont"] = "a"
+  m["email_end"] = "com"
+
+  s, i := searchengine.Criteria(entities.User, m, "AND")
+  log.Info.Println(s)
+  log.Info.Println(i)
+          </code></pre>
+
+          <h4 class="sub-header" id="pagination">2.2&nbsp;&nbsp;Pagination</h4>
+
+          <h5 class="resource-title">func (q *Query) Pagination</h5>
+          <pre><code class="go">
+func (q *Query) Pagination(page interface{}, perPage interface{}) (int, int, int)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Builds query for pagination, setting the <i>offset</i> and <i>limit</i>. Given parameters current page (as interface{}) and amount of items per page, it returns the current page (as int), total of pages and total of entries.
+          </p>          
+
+          <h4 class="sub-header" id="ordering">2.3&nbsp;&nbsp;Ordering</h4>
+
+          <h5 class="resource-title">func (q *Query) Ordering</h5>
+          <pre><code class="go">
+func (q *Query) Ordering(order string) 
+          </code></pre>
+                    
+          <p style="text-align:justify">
+            Builds query for ordering. Be sure to sanitize the <i>order</i> parameter to avoid <a href="https://www.owasp.org/index.php/SQL_Injection" target="_blank">SQL injection</a>.
+          </p>          
+          
+<!-- end of sub-models -->
           
           <h3 class="main-header" id="view">3&nbsp;&nbsp;View</h3>
 
-          <p style="text-align:justify">
-          ...
-          </p>
-          
-          
-          <h3 class="main-header" id="handler-controller">4&nbsp;&nbsp;Controller/Handler</h3>
+          <h5 class="resource-title">type SystemMessage struct</h5>
+          <pre><code class="go">
+type SystemMessage struct {
+  Type    string `json:"type"`
+  Content string `json:"content"`
+}
+          </code></pre>
 
           <p style="text-align:justify">
-          ...
+            Basic message as JSON. <i>type</i> can be <i>alert</i> to announce error/danger or <i>notice</i> to announce an success. <i>content</i> is the full explanation of the message.
+          </p>          
+
+          <h5 class="resource-title">type DefaultMessage struct</h5>
+          <pre><code class="go">
+type DefaultMessage struct {
+  Message SystemMessage `json:"system_message"`
+}
+          </code></pre>
+
+          <p style="text-align:justify">
+            Wrap for <i>SystemMessage</i>. Example:
+          </p>          
+
+          <pre><code class="json">
+{
+    "system_message": {
+        "type": "notice",
+        "content": "product was successfully created"
+    }
+}
+          </code></pre>
+
+          <h5 class="resource-title">type ErrorMessage struct</h5>
+          <pre><code class="go">
+type ErrorMessage struct {
+  Message SystemMessage `json:"system_message"`
+  Errors  []string      `json:"errors"`
+}
+          </code></pre>
+
+          <p style="text-align:justify">
+            Wrap for <i>SystemMessage</i> with an array of errors, each error as string. Example:
+          </p>          
+
+          <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "product was not created",
+    },
+    "errors": [ 
+      "name can't be blank",
+      "price can't be blank",
+      ...
+    ]
+}
+          </code></pre>
+
+          <h5 class="resource-title">type MainPagination struct</h5>
+          <pre><code class="go">
+type MainPagination struct {
+  CurrentPage  int `json:"current_page"`
+  TotalPages   int `json:"total_pages"`
+  TotalEntries int `json:"total_entries"`
+}
+          </code></pre>
+
+          <p style="text-align:justify">
+            Pagination data for lists.
+          </p>          
+
+          <h5 class="resource-title">func SetSystemMessage</h5>
+          <pre><code class="go">
+func SetSystemMessage(mType string, content string) SystemMessage
+          </code></pre>
+
+          <p style="text-align:justify">
+            Sets a <i>SystemMessage</i>.
+          </p>          
+
+          <h5 class="resource-title">func SetDefaultMessage</h5>
+          <pre><code class="go">
+func SetDefaultMessage(mType string, content string) DefaultMessage  
+          </code></pre>
+
+          <p style="text-align:justify">
+            Sets a <i>DefaultMessage</i>.
+          </p>          
+
+          <h5 class="resource-title">func SetErrorMessage</h5>
+          <pre><code class="go">
+func SetErrorMessage(mType string, content string, errs []error) ErrorMessage
+          </code></pre>
+
+          <p style="text-align:justify">
+            Sets an <i>ErrorMessage</i>.
+          </p>          
+
+          <h5 class="resource-title">func SetUnauthorizedErrorMessage</h5>
+          <pre><code class="go">
+func SetUnauthorizedErrorMessage() DefaultMessage
+          </code></pre>
+
+          <p style="text-align:justify">
+            Returns <i>Unauthorized</i> HTTP error message.
           </p>
-          
-          <h3 class="main-header" id="mailer">5&nbsp;&nbsp;Mailer</h3>
+
+          <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "401 Unauthorized"
+    }
+}
+          </code></pre>
+
+          <h5 class="resource-title">func SetForbiddenErrorMessage</h5>
+          <pre><code class="go">
+func SetForbiddenErrorMessage() DefaultMessage
+          </code></pre>
+
+          <p style="text-align:justify">
+            Returns <i>Forbidden</i> HTTP error message.
+          </p>          
+
+          <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "403 Forbidden"
+    }
+}
+          </code></pre>
+
+          <h5 class="resource-title">func SetNotFoundErrorMessage</h5>
+          <pre><code class="go">
+func SetNotFoundErrorMessage() DefaultMessage 
+          </code></pre>
+
+          <p style="text-align:justify">
+            Returns <i>Not Found</i> HTTP error message.
+          </p>          
+
+          <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "404 Not Found"
+    }
+}
+          </code></pre>
+
+          <h3 class="main-header" id="handler-controller">4&nbsp;&nbsp;Handler (Controller)</h3>
+
+          <h5 class="resource-title">func ApiRoot</h5>
+          <pre><code class="go">
+func ApiRoot(w http.ResponseWriter, r *http.Request)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Responds to an HTTP request, as JSON, for the URL "/"
+          </p>          
+
+          <h5 class="resource-title">func Error401</h5>
+          <pre><code class="go">
+func Error401(w http.ResponseWriter, r *http.Request)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Responds to a HTTP request, as JSON, when unauthorized error happens.
+          </p>          
+
+          <h5 class="resource-title">func Error403</h5>
+          <pre><code class="go">
+func Error403(w http.ResponseWriter, r *http.Request)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Responds to a HTTP request, as JSON, when forbidden error happens.
+          </p>          
+
+          <h5 class="resource-title">func Error404</h5>
+          <pre><code class="go">
+func Error404(w http.ResponseWriter, r *http.Request)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Responds to a HTTP request, as JSON, when not found error happens.
+          </p>          
+
+          <h5 class="resource-title">func QueryParamsToMapCriteria</h5>
+          <pre><code class="go">
+func QueryParamsToMapCriteria(param string, mapParams map[string][]string) map[string]string
+          </code></pre>
+
+          <p style="text-align:justify">
+            Translates the HTTP parameter <i>search</i> to a simple <i>map</i> structure for <i>SearchEngine</i> use. Example:
+          </p>          
+
+          <pre><code class="nohighlight">
+http://localhost:8081/people?search[name_cont]=A&search[age_gt]=21
+          </code></pre>
           
           <p style="text-align:justify">
-            Check all available function in package <i>mailer</i> below:
+            It will transform the parameter <i>search</i> to:
+          </p>          
+
+          <pre><code class="go">
+map[string]string{ "name_cont" : "A", "age_gt" : "21" }
+          </code></pre>
+
+          <h3 class="main-header" id="config">5&nbsp;&nbsp;Config</h3>
+
+          <h5 class="resource-title">type AppConfig</h5>
+          <pre><code class="go">
+type AppConfig struct {
+  AppName                        string   `yaml:"app_name"`
+  AppRepository                  string   `yaml:"app_repository"`
+  SecretKey                      string   `yaml:"secret_key"`
+  ResetPasswordExpirationSeconds int      `yaml:"reset_password_expiration_seconds"`
+  ResetPasswordUrl               string   `yaml:"reset_password_url"`
+  TokenExpirationSeconds         int      `yaml:"token_expiration_seconds"`
+  Locales                        []string `yaml:"locales"`
+}
+          </code></pre>
+
+          <p style="text-align:justify">
+            Structure that holds the application configuration.
+          </p>          
+
+          <h5 class="resource-title">var App</h5>
+          <pre><code class="go">
+var App AppConfig
+          </code></pre>
+
+          <p style="text-align:justify">
+            Variable that holds the application configuration.
+          </p>          
+
+          <h3 class="main-header" id="others">6&nbsp;&nbsp;Others</h3>
+          
+          <h4 class="sub-header" id="log">6.1&nbsp;&nbsp;Log</h4>
+
+          <h5 class="resource-title">var Debug, var info, var Warn, var Error and var Fatal</h5>
+          <pre><code class="go">
+var (
+  Debug = log.New(writer, fmt.Sprintf("\033[94m[DEBUG]\033[39m "), log.LstdFlags)
+  Info  = log.New(writer, fmt.Sprintf("\033[36m[INFO]\033[39m "), log.LstdFlags)
+  Warn  = log.New(writer, fmt.Sprintf("\033[93m[WARN]\033[39m "), log.LstdFlags)
+  Error = log.New(writer, fmt.Sprintf("\033[91m[ERROR]\033[39m "), log.LstdFlags)
+  Fatal = log.New(writer, fmt.Sprintf("\033[90m[FATAL]\033[39m "), log.LstdFlags)
+)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Variables for log data. Usage:
           </p>
 
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Function</th>
-                <th>Definition</th>
-              </tr>              
-            </thead>
-            <tbody>
-              <tr>
-                <td>SetFrom(name string, tEmail string)<td>
-                <td><td>
-              </tr>
-              <tr>
-                <td>AddTo(name string, tEmail string)<td>
-                <td><td>
-              </tr>
-              <tr>
-                <td>AddCc(name string, tEmail string)<td>
-                <td><td>
-              </tr>
-              <tr>
-                <td>AddBcc(name string, tEmail string)<td>
-                <td><td>
-              </tr>
-              <tr>
-                <td>ResetAll()<td>
-                <td><td>
-              </tr>
-              <tr>
-                <td>Send(subject string, body string, html bool)<td>
-                <td><td>
-              </tr>
-              <tr>
-                <td>Reciepts() []string<td>
-                <td><td>
-              </tr>
-            </tbody>
-          </table>
+          <pre><code class="go">
+log.Debug.Println("Log a debug")
+log.Info.Println("Log an info")
+log.Warn.Println("Log an warn")
+log.Error.Println("Log an error")
+          </code></pre>
+          
+          <h4 class="sub-header" id="mailer">6.2&nbsp;&nbsp;Mailer</h4>
+                    
+          <h5 class="resource-title">func SetFrom</h5>
+          <pre><code class="go">
+func SetFrom(name string, tEmail string)
+          </code></pre>
+          
+          <p style="text-align:justify">
+            Sets e-mail: <i>from</i> field.
+          </p>          
+          
+          <h5 class="resource-title">func AddTo</h5>
+          <pre><code class="go">
+func AddTo(name string, tEmail string)
+          </code></pre>
 
-          <h3 class="main-header" id="ordering">6&nbsp;&nbsp;Search Engine</h3>
+          <p style="text-align:justify">
+            Adds receipts in e-mail <i>to</i> field.
+          </p>          
+          
+          <h5 class="resource-title">func AddCc</h5>
+          <pre><code class="go">
+func AddCc(name string, tEmail string)
+          </code></pre>
 
-          <h3 class="main-header" id="ordering">7&nbsp;&nbsp;Ordering</h3>
+          <p style="text-align:justify">
+            Adds receipts in e-mail <i>cc</i> field.
+          </p>          
+          
+          <h5 class="resource-title">func AddBcc</h5>
+          <pre><code class="go">
+func AddBcc(name string, tEmail string)
+          </code></pre>
 
-          <h3 class="main-header" id="ordering">8&nbsp;&nbsp;Pagination</h3>
+          <p style="text-align:justify">
+            Adds receipts in e-mail <i>bcc</i> field.
+          </p>          
+
+          <h5 class="resource-title">func Receipts</h5>
+          <pre><code class="go">
+func Receipts() []string
+          </code></pre>
+
+          <p style="text-align:justify">
+            Returns a list of receipts.
+          </p>          
+          
+          <h5 class="resource-title">func ResetReceipts</h5>
+          <pre><code class="go">
+func ResetReceipts()
+          </code></pre>
+
+          <p style="text-align:justify">
+            Removes all receipts.
+          </p>          
+          
+          <h5 class="resource-title">func Send</h5>
+          <pre><code class="go">
+func Send(subject string, body string, html bool)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Sends e-mail. The parameter <i>html</i> when <i>true</i> send email in HTML else sends e-mail in plain text.
+          </p>          
+
+          <h4 class="sub-header" id="i18n">6.3&nbsp;&nbsp;Internationalization (I18n)</h4>
+
+          <h5 class="resource-title">type Keys</h5>
+          <pre><code class="go">
+type Keys struct {
+  Welcome                      string `yaml:"welcome"`
+  PasswordRecoveryInstructions string `yaml:"password_recovery_instructions"`
+}
+          </code></pre>
+
+          <p style="text-align:justify">
+            Structure that holds data locale.
+          </p>          
+
+          <h5 class="resource-title">var I18n</h5>
+          <pre><code class="go">
+var I18n Keys
+          </code></pre>
+
+          <p style="text-align:justify">
+            Variable that holds data locale.
+          </p>          
+
+          <h5 class="resource-title">func Load</h5>
+          <pre><code class="go">
+func Load(locale string)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Loads locale. This is mostly used for load user's locales.
+          </p>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              Check the feature <a href="features.html#i18n">Internationalization (I18n)</a> session to learn how to add new locales.
+            </p>
+          </div>
+
+          <h4 class="sub-header" id="crypto">6.4&nbsp;&nbsp;Crypto</h4>
+
+          <h5 class="resource-title">func SetPassword</h5>
+          <pre><code class="go">
+func SetPassword(password string) string
+          </code></pre>
+          
+          <p style="text-align:justify">
+            Returns an asymmetrically encrypted string.
+          </p>
+
+          <h5 class="resource-title">func CheckPassword</h5>
+          <pre><code class="go">
+func CheckPassword(password string, hashedPassword string) bool
+          </code></pre>
+
+          <p style="text-align:justify">
+            Encrypts and checks with another encrypted string.
+          </p>
+
+          <h5 class="resource-title">func RandString</h5>
+          <pre><code class="go">
+func RandString(size int) string
+          </code></pre>
+
+          <p style="text-align:justify">
+            Returns random strings.
+          </p>
+
+          <h5 class="resource-title">func EncryptText</h5>
+          <pre><code class="go">
+func EncryptText(clearText string, key string) string
+          </code></pre>
+
+          <p style="text-align:justify">
+            Encrypts a string symmetrically.
+          </p>
+
+          <h4 class="sub-header" id="conversor">6.5&nbsp;&nbsp;Conversor</h4>
+
+          <h5 class="resource-title">func StringToInterface</h5>
+          <pre><code class="go">
+func StringToInterface(contentType string, contentValue string) (interface{}, error)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Converts string to interface.
+          </p>
+
+          <h5 class="resource-title">func StringToInt</h5>
+          <pre><code class="go">
+func StringToInt(valueContent string) (interface{}, error)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Converts string to integer.
+          </p>
+
+          <h5 class="resource-title">func StringToFloat</h5>
+          <pre><code class="go">
+func StringToFloat(valueContent string) (interface{}, error) 
+          </code></pre>
+
+          <p style="text-align:justify">
+            Converts string to float.
+          </p>
+
+          <h5 class="resource-title">func StringToBoolean</h5>
+          <pre><code class="go">
+func StringToBoolean(valueContent string) (interface{}, error)
+          </code></pre>
+
+          <p style="text-align:justify">
+            Converts string to boolean.
+          </p>
 
         </div>
       </div>
