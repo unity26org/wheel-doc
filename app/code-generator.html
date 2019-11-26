@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
     <!-- build:js scripts/modernizr.js -->
-    <script src="scripts/modernizr.js"></script>
+    <!-- <script src="scripts/modernizr.js"></script> -->
     <!-- endbuild -->
   </head>
   <body>
@@ -152,7 +152,7 @@ Options:
 More:
   -h, [--help]                             # Show this help message and quit
   -v, [--version]                          # Show Wheel version number and quit           
-          </code></pre>
+          </pre>
 
           <p style="text-align:justify">
            As you can see, Wheel has basically two commands: <i>new</i> and <i>generate</i>.
@@ -234,10 +234,9 @@ go run main.go --help
           </pre>
 
           <p style="text-align:justify">
-            There are two options:
+            There is only one option:
             
             <ul>
-              <li><i>-R</i> or <i>--skip-default-resources</i> it skips the default resources. Check the <a href="/default-resourses.html">Default Resources</a> section.</li>
               <li><i>-G</i> or <i>--skip-git</i> it skips the <i>.gitignore</i> file.</li>
             </ul>
           </p>
@@ -253,11 +252,11 @@ go run main.go --help
           </p>
 
           <p style="text-align:justify">
-            <i>NAME:</i> is the name of the <a href="#scaffold">scaffold</a>, <a href="#model">model</a>, <a href="#entity">entity</a> and <a href="#handler">handler</a>. For example, </i>description:string</i>
+            <i>NAME:</i> is the name of the <i>SUBJECT</i>.
           </p>
 
           <p style="text-align:justify">
-            <i>ATTRIBUTES</i>: if the <i>SUBJECT</i> is not a <i>handler</i>, the attributes are pairs of "name" and "type" separated by a ":". They will be used to define the model attributes in the application and the columns in the database. For example, if we define a attribute <i>title:string</i>, it means that, the model on application has a <i>string</i> attribute called <i>title</i> and the table on database has a <i>VARCHAR(255)</i> column called <i>title</i>.
+            <i>ATTRIBUTES</i>: if the <i>SUBJECT</i> is not a <i>handler</i>, the attributes are pairs of "name" and "type" separated by a ":". They will be used to define the model attributes in the application and the columns in the database. For example, if we define an attribute <i>title:string</i>, it means that, the model in the application has a <i>string</i> attribute called <i>title</i> and the table in the database has a <i>VARCHAR(255)</i> column called <i>title</i>.
           </p>
 
           <p style="text-align:justify">
@@ -530,8 +529,9 @@ $> curl -X GET http://localhost:8081/animals/zebra
       </div>
 
       <div class="footer">
-        <p>Thanks from the Wheel Core Team</p>
+        <p class="mb-1">This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International</a> License.</p>
       </div>
+
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

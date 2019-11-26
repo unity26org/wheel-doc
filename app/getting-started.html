@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
     <!-- build:js scripts/modernizr.js -->
-    <script src="scripts/modernizr.js"></script>
+    <!-- <script src="scripts/modernizr.js"></script> -->
     <!-- endbuild -->
   </head>
   <body>
@@ -192,7 +192,13 @@ export PATH=$PATH:YOUR_DESIRED_PATH
           
           <!-- Usage -->
           <h3 class="main-header" id="usage">2&nbsp;&nbsp;Usage</h3>
-          <p style="text-align:justify">Wheel has only two options: <i>new</i>, to create new APIs, and <i>generate</i>, to add new resources to your API.</p>
+
+          <p style="text-align:justify">Wheel has only two options: <i>new</i> and <i>generate</i>.</p>
+          
+          <ul>
+            <li><i>new</i>: creates new APIs</li>
+            <li><i>generate</i>: adds new resources into an API.</li>
+          </ul>
           
           <p style="text-align:justify">Check <i>help</i> for more details.</p>
 
@@ -206,16 +212,16 @@ wheel --help
             Let's create an API for a car catalog.
           
           <p style="text-align:justify">
-            In this example Let's assume that we are working on the path <i>github.com/account_name/car_catalog</i>. Where <i>github.com</i> means the code repository system, <i>account_name</i> is a fake name for an account on github.com and <i>car_catalog</i> is the name of the application.
+            In this example Let's assume that we are working on the path <i>github.com/account_name/car_catalog</i>. Where <i>github.com</i> means the code repository system, <i>account_name</i> is your account name on github.com and <i>car_catalog</i> is the name of the application.
           </p>
 
           <pre><code class="nohighlight">
-wheel new github.com/account_name/car_catalog
+$> wheel new github.com/account_name/car_catalog
           </code></pre>
 
           <p style="text-align:justify">It will output something like this:</p>
 
-          <pre><code class="nohighlight">
+          <pre class="terminal">
 "Go" seems installed
 Checking dependences...
          ...
@@ -232,7 +238,7 @@ Set up your database connection modifying the file config/database.yml
 
 For more details call help:
 go run main.go --help
-          </code></pre>
+          </pre>
 
           <div class="alert alert-warning" role="alert">
             <p><b>Very important!</b></p>
@@ -284,6 +290,8 @@ go run main.go --help
           </table>
 
           <h4 class="sub-header" id="usage-configure">2.3&nbsp;&nbsp;Configure</h4>
+          
+          <p style="text-align:justify">Configure your application.</p>          
 
           <h5 class="resource-title">Database</h5>
 
@@ -422,7 +430,7 @@ $> go run main.go -mode=migrate
           </code></pre>
 
           <p style="text-align:justify">
-            Don't forget run your application!
+            Don't forget run your application again.
           </p>          
 
           <pre><code class="nohighlight">
@@ -1516,10 +1524,10 @@ $> curl -X DELETE -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://loca
         </div>
       </div>
             
-
       <div class="footer">
-        <p>Thanks from the Wheel Core Team</p>
+        <p class="mb-1">This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International</a> License.</p>
       </div>
+
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

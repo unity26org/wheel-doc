@@ -9,6 +9,7 @@
 body {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+  font-size: 14px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -111,9 +112,8 @@ pre.terminal {
   color: #e6e1dc;
 }
 
-
 h3.main-header:not(:first-child) {
-  margin-top: 80px;  
+  margin-top: 80px;
 }
 
 h3.main-header {
@@ -124,9 +124,9 @@ h3.main-header {
 
 h4.sub-header {
   margin-top: 60px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 h5.resource-title {
-  margin-top: 40px;  
+  margin-top: 35px;
 }

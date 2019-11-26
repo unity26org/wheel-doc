@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
     <!-- build:js scripts/modernizr.js -->
-    <script src="scripts/modernizr.js"></script>
+    <!-- <script src="scripts/modernizr.js"></script> -->
     <!-- endbuild -->
   </head>
   <body>
@@ -92,7 +92,7 @@
             </div>
           </li>
           <li>
-            <a href="/contribute" class="nav-link">Contribute</a>
+            <a href="/contribute.html" class="nav-link">Contribute</a>
           </li>
         </ul>
         <h3 class="text-muted">Wheel Doc</h3>
@@ -163,7 +163,7 @@ var Errors []string
             Global var to return errors when creating or updating data.
           </p>
 
-          <h5 class="resource-title">type Query</h5>
+          <h5 id="type-query" class="resource-title">type Query</h5>
           <pre><code class="go">
 type Query struct {
 	Db    *gorm.DB
@@ -172,7 +172,7 @@ type Query struct {
           </code></pre>          
 
           <p style="text-align:justify">
-            Structure used to build advanced queries, such as <a href="#search-engine">Search Engine</a>, <a href="#pagination">Pagination</a> and <a href="#ordering">Ordering</a>. See a full example below:
+            Structure used to build advanced queries, such as <a href="#search-engine">Search Engine</a>, <a href="#pagination">Pagination</a> and <a href="#ordering">Ordering</a>. See this full example below:
           </p>
 
           <pre><code class="go">
@@ -214,7 +214,7 @@ func Disconnect()
             Disconnects from database.
           </p>
 
-          <h5 class="resource-title">func Connect</h5>
+          <h5 class="resource-title">func TableName</h5>
           <pre><code class="go">
 func TableName(table interface{}) string
           </code></pre>          
@@ -227,15 +227,18 @@ func TableName(table interface{}) string
             The parameter <i>table</i> is an <i>entity</i>. You can check all available entities in directory <i>db/entities/</i>.
           </p>
 
-          <p style="text-align:justify">
-            The example below will print: <br>
-            <i>[INFO] users</i>
-          </p>
-
           <pre><code class="go">
 tableName := model.TableName(entities.User)
 log.Info.Println(tableName)
           </code></pre>          
+
+          <p style="text-align:justify">
+            The example above will print:
+          </p>
+          
+          <pre class="terminal">
+[INFO] users
+          </pre>
 
           <h5 class="resource-title">func GetColumnType</h5>
           <pre><code class="go">
@@ -250,15 +253,19 @@ func GetColumnType(table interface{}, columnName string) (string, error)
             The parameter <i>table</i> is an <i>entity</i>. You can check all available entities in directory <i>db/entities/</i>.
           </p>
 
-          <p style="text-align:justify">
-            The example below will print: <br>
-            <i>[INFO] string</i>
-          </p>
-
           <pre><code class="go">
 columnType := model.GetColumnType(entities.User, 'email')
 log.Info.Println(columnType)
           </code></pre>
+
+          <p style="text-align:justify">
+            The example above will print:
+          </p>
+          
+          <pre class="terminal">
+[INFO] string
+          </pre>
+
 
           <h5 class="resource-title">func GetColumnValue</h5>
           <pre><code class="go">
@@ -287,7 +294,7 @@ func SetColumnValue(table interface{}, columnName string, value string) error
           </p>
 
           <p style="text-align:justify">
-            The parameter <i>value</i> is a <i>string</i> type, even if you are setting a value to a non-string column. Don't worry, this function will convert properly the value to column's type.
+            The parameter <i>value</i> is a <i>string</i> type, even if you are setting a value to a non-string column. Don't worry, this function will convert properly the value to the type of the column.
           </p>
 
           <h5 class="resource-title">func ColumnsFromTable</h5>
@@ -316,12 +323,19 @@ func (q *Query) SearchEngine(criteria map[string]string))
           </code></pre>
 
           <p style="text-align:justify">
-            Builds the query to filter records by GORM library. To learn more about GORM click <a href="http://gorm.io" target="blank">here</a>.
+            Builds the query to filter records of an specific table in the database.
           </p>
+
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              If you have missed the explanation of the <i>q *Query</i> paramenter, please. check <a href="#type-query">it</a>.
+            </p>
+          </div>
 
           <h5 class="resource-title">func Criteria</h5>
           <pre><code class="go">
-func Criteria(criteria map[string]string, logic string) (string, []interface{})
+func Criteria(table interface{}, criteria map[string]string, logic string) (string, []interface{})
           </code></pre>
 
           <p style="text-align:justify">
@@ -329,9 +343,7 @@ func Criteria(criteria map[string]string, logic string) (string, []interface{})
           </p>
 
           <p style="text-align:justify">
-            The example below will print: <br>
-            <i>[INFO] name ILIKE ? AND email ILIKE ?</i><br>
-            <i>[INFO] {"%a%" "%com"}</i>
+            The parameter <i>logic</i> you can use <i>AND</i> ou <i>OR</i> in your query.
           </p>
                     
           <pre><code class="go">
@@ -345,6 +357,15 @@ func Criteria(criteria map[string]string, logic string) (string, []interface{})
   log.Info.Println(i)
           </code></pre>
 
+          <p style="text-align:justify">
+The example above will print:
+          </p>
+          
+          <pre class="terminal">
+[INFO] name ILIKE ? AND email ILIKE ?
+[INFO] {"%a%" "%com"}
+          </pre>
+
           <h4 class="sub-header" id="pagination">2.2&nbsp;&nbsp;Pagination</h4>
 
           <h5 class="resource-title">func (q *Query) Pagination</h5>
@@ -353,7 +374,7 @@ func (q *Query) Pagination(page interface{}, perPage interface{}) (int, int, int
           </code></pre>
 
           <p style="text-align:justify">
-            Builds query for pagination, setting the <i>offset</i> and <i>limit</i>. Given parameters current page (as interface{}) and amount of items per page, it returns the current page (as int), total of pages and total of entries.
+            Builds query for pagination, setting the <i>offset</i> and <i>limit</i>. Parameters are the target <i>page</i> (as interface{}) and amount of items <i>per page</i>. It returns the current page (as int), total of pages and total of entries.
           </p>          
 
           <h4 class="sub-header" id="ordering">2.3&nbsp;&nbsp;Ordering</h4>
@@ -380,8 +401,13 @@ type SystemMessage struct {
           </code></pre>
 
           <p style="text-align:justify">
-            Basic message as JSON. <i>type</i> can be <i>alert</i> to announce error/danger or <i>notice</i> to announce an success. <i>content</i> is the full explanation of the message.
-          </p>          
+            Basic message as JSON.             
+          </p>
+          
+          <ul>
+            <li><i>type</i>: can be <i>alert</i> to announce error/danger or <i>notice</i> to announce  success.</li>
+            <li><i>content</i>: is the full explanation of the message.</li>
+          </ul>
 
           <h5 class="resource-title">type DefaultMessage struct</h5>
           <pre><code class="go">
@@ -412,7 +438,7 @@ type ErrorMessage struct {
           </code></pre>
 
           <p style="text-align:justify">
-            Wrap for <i>SystemMessage</i> with an array of errors, each error as string. Example:
+            Wrap for <i>SystemMessage</i> with an array of errors. Each error as string. Example:
           </p>          
 
           <pre><code class="json">
@@ -448,7 +474,7 @@ func SetSystemMessage(mType string, content string) SystemMessage
           </code></pre>
 
           <p style="text-align:justify">
-            Sets a <i>SystemMessage</i>.
+            Defines a <i>SystemMessage</i>.
           </p>          
 
           <h5 class="resource-title">func SetDefaultMessage</h5>
@@ -457,7 +483,7 @@ func SetDefaultMessage(mType string, content string) DefaultMessage
           </code></pre>
 
           <p style="text-align:justify">
-            Sets a <i>DefaultMessage</i>.
+            Defines a <i>DefaultMessage</i>.
           </p>          
 
           <h5 class="resource-title">func SetErrorMessage</h5>
@@ -466,7 +492,7 @@ func SetErrorMessage(mType string, content string, errs []error) ErrorMessage
           </code></pre>
 
           <p style="text-align:justify">
-            Sets an <i>ErrorMessage</i>.
+            Defines an <i>ErrorMessage</i>.
           </p>          
 
           <h5 class="resource-title">func SetUnauthorizedErrorMessage</h5>
@@ -635,6 +661,17 @@ log.Info.Println("Log an info")
 log.Warn.Println("Log an warn")
 log.Error.Println("Log an error")
           </code></pre>
+
+          <p style="text-align:justify">
+The example above will print:
+          </p>
+
+          <pre class="terminal">
+[DEBUG] Log a debug
+[INFO] Log an info
+[WARN] Log an warn
+[ERROR] Log an error
+          </code></pre>
           
           <h4 class="sub-header" id="mailer">6.2&nbsp;&nbsp;Mailer</h4>
                     
@@ -736,7 +773,7 @@ func Load(locale string)
           <div class="alert alert-primary" role="alert">
             <p><b>Quick tip!</b></p>
             <p style="text-align:justify">
-              Check the feature <a href="features.html#i18n">Internationalization (I18n)</a> session to learn how to add new locales.
+              Check the feature <a href="/features.html#i18n">Internationalization (I18n)</a> session to learn how to add new locales.
             </p>
           </div>
 
@@ -757,7 +794,7 @@ func CheckPassword(password string, hashedPassword string) bool
           </code></pre>
 
           <p style="text-align:justify">
-            Encrypts and checks with another encrypted string.
+            Encrypts the <i>password</i> parameter and checks it with the <i>hashedPassword</i> parameter.
           </p>
 
           <h5 class="resource-title">func RandString</h5>
@@ -766,7 +803,7 @@ func RandString(size int) string
           </code></pre>
 
           <p style="text-align:justify">
-            Returns random strings.
+            Returns random strings. The length of the string is defined by the <i>size</i> paramenter.
           </p>
 
           <h5 class="resource-title">func EncryptText</h5>
@@ -820,8 +857,9 @@ func StringToBoolean(valueContent string) (interface{}, error)
       </div>
 
       <div class="footer">
-        <p>Thanks from the Wheel Core Team</p>
+        <p class="mb-1">This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International</a> License.</p>
       </div>
+
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
