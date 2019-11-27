@@ -109,7 +109,7 @@ function html() {
     .pipe(dest('dist'));
 }
 
-function images() {
+async function images() {
   return src('app/images/**/*', { since: lastRun(images) })
     .pipe($.imagemin())
     .pipe(dest('dist/images'));
@@ -120,7 +120,7 @@ function fonts() {
     .pipe($.if(!isProd, dest('.tmp/fonts'), dest('dist/fonts')));
 };
 
-function extras() {
+async function extras() {
   return src([
     'app/*',
     '!app/*.html'

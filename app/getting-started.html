@@ -92,7 +92,7 @@
             </div>
           </li>
           <li>
-            <a href="/contribute" class="nav-link">Contribute</a>
+            <a href="/contribute.html" class="nav-link">Contribute</a>
           </li>
         </ul>
         <h3 class="text-muted">Wheel Doc</h3>
@@ -668,13 +668,13 @@ func IsValid(car *entities.Car) (bool, []error) {
 func IsValid(car *entities.Car) (bool, []error) {
 	var errs []error
   
-	if len(car.Description) < 3 {
+	if len(car.Description) &lt; 3 {
 		errs = append(errs, errors.New("description is too short"))
-	} else if len(car.Description) > 255 {
+	} else if len(car.Description) &gt; 255 {
 		errs = append(errs, errors.New("description is too long"))
 	}
 
-	if car.Price >= 0.01 {
+	if car.Price &gt;= 0.01 {
 		errs = append(errs, errors.New("price can't be less than $ 0.01"))
 	}
 
@@ -700,7 +700,7 @@ func IsValid(car *entities.Car) (bool, []error) {
   ...
   
   currentTime := time.Now()
-  if car.Year < 2010 {
+  if car.Year &lt; 2010 {
     errs = append(errs, errors.New("year can't be less than 2010"))
   } else if car.Year > int64(currentTime.Year()) {
     errs = append(errs, errors.New("year can't be greater than current year"))
@@ -1169,7 +1169,7 @@ func WishlistList(w http.ResponseWriter, r *http.Request) {
 
   wishlistList, page, pages, entries = wishlist.Paginate(criteria, order, r.FormValue("page"), r.FormValue("per_page"))
 
-  for i = 0; i < len(wishlistList); i++ {
+  for i = 0; i &lt; len(wishlistList); i++ {
     wishlistJsons = append(wishlistJsons, wishlist.SetJson(wishlistList[i]))
   }
 
