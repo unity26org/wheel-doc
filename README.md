@@ -1,5 +1,5 @@
 # Overview
-Documentation for Wheel framework
+Documentation for Wheel tool
 
 ## Usage
 
