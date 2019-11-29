@@ -1,5 +1,5 @@
 # Overview
-Documentation for Wheel tool
+Documentation for [Wheel](https://github.com/unity26org/wheel) tool
 
 ## Usage
 
