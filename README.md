@@ -5,7 +5,7 @@ Documentation for [Wheel](https://github.com/unity26org/wheel) tool
 
 Access: [http://wheel.unity26.org](http://wheel.unity26.org)
 
-## Contibute
+## Contribute
 
 ```
 git clone git@github.com:unity26org/wheel-doc.git
