@@ -10,13 +10,13 @@
     <!-- Place favicon.ico in the root directory -->
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
+    <link rel="stylesheet" href="/node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
     <!-- build:js scripts/modernizr.js -->
-    <!-- <script src="scripts/modernizr.js"></script> -->
+    <script src="scripts/modernizr.js"></script>
     <!-- endbuild -->
   </head>
   <body>
@@ -492,7 +492,14 @@ router.HandleFunc("/cars/{id}", handlers.CarDestroy).Methods("DELETE")
           </p>          
 
           <pre><code class="nohighlight">
-$> curl -X POST -F 'description=Chevrolet' -F 'year=2019' -F 'price=25000.00' -F 'available=true' http://localhost:8081/cars
+curl -X POST -H 'Content-Type: application/json' \
+    -d '{ \
+        "description": "Chevrolet", \
+        "available": "true", \ 
+        "price": "25000.00", \ 
+        "year": "2019" \
+      }' \
+    http://localhost:8081/cars
           </code></pre>
 
           <p style="text-align:justify">
@@ -524,7 +531,7 @@ $> curl -X POST -F 'description=Chevrolet' -F 'year=2019' -F 'price=25000.00' -F
           </p>
           
           <pre><code class="nohighlight">
-$> curl -X GET http://localhost:8081/cars
+curl -X GET http://localhost:8081/cars
           </code></pre>
 
           <p style="text-align:justify">
@@ -566,7 +573,7 @@ $> curl -X GET http://localhost:8081/cars
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X GET http://localhost:8081/cars/1
+curl -X GET http://localhost:8081/cars/1
           </code></pre>
 
           <p style="text-align:justify">
@@ -593,7 +600,14 @@ $> curl -X GET http://localhost:8081/cars/1
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X PUT -F 'price=18500.00' -F 'year=18500.00' http://localhost:8081/cars/1
+curl -X PUT -H 'Content-Type: application/json' \
+    -d '{ \
+        "description": "Chevrolet", \
+        "available":"true", \ 
+        "price": "18500.00", \
+        "year":"2018" \
+      }' \
+    http://localhost:8081/cars
           </code></pre>
 
           <p style="text-align:justify">
@@ -603,8 +617,8 @@ $> curl -X PUT -F 'price=18500.00' -F 'year=18500.00' http://localhost:8081/cars
           <pre><code class="json">
 {
     "system_message": {
-      "type":"notice",
-      "content":"car was successfully updated"
+      "type": "notice",
+      "content": "car was successfully updated"
     },
     "car": {
         "id": 1,
@@ -625,7 +639,7 @@ $> curl -X PUT -F 'price=18500.00' -F 'year=18500.00' http://localhost:8081/cars
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X DELETE http://localhost:8081/cars/1
+curl -X DELETE http://localhost:8081/cars/1
           </code></pre>
 
           <p style="text-align:justify">
@@ -716,7 +730,14 @@ func IsValid(car *entities.Car) (bool, []error) {
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X POST -F 'year=3000' -F 'price=0' http://localhost:8081/cars
+curl -X POST -H 'Content-Type: application/json' \
+    -d '{ \
+        "description": "", \
+        "available":"true", \ 
+        "price": "0", \
+        "year":"3000" \
+      }' \
+    http://localhost:8081/cars
           </code></pre>
 
           <p style="text-align:justify">
@@ -755,7 +776,7 @@ $> curl -X POST -F 'year=3000' -F 'price=0' http://localhost:8081/cars
               </tr>
               <tr>
                 <th>password</th>
-                <td>!Secret.123!</td>
+                <td>Secret123!</td>
               </tr>
             </tbody>
           </table>
@@ -774,7 +795,12 @@ $> curl -X POST -F 'year=3000' -F 'price=0' http://localhost:8081/cars
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X POST -F 'email=user@example.com' -F 'password=!Secret.123!'  http://localhost:8081/sessions/sign_in
+curl -X POST -H 'Content-Type: application/json' \
+    -d '{ \
+        "email": "user@example.com", \
+        "password": "Secret123!" \
+      }' \
+    http://localhost:8081/sessions/sign_in
           </code></pre>
 
           <p style="text-align:justify">
@@ -814,7 +840,8 @@ $> curl -X POST -F 'email=user@example.com' -F 'password=!Secret.123!'  http://l
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X DELETE -H 'header:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://localhost:8081/sessions/sign_out
+curl -X DELETE -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \ 
+    http://localhost:8081/sessions/sign_out
           </code></pre>
 
           <p style="text-align:justify">
@@ -902,7 +929,15 @@ $> curl -X DELETE -H 'header:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://loc
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'description=Ford' -F 'year=2016' -F 'price=15300.00' -F 'available=true' http://localhost:8081/cars
+curl -X POST -H 'Content-Type: application/json' \ 
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \ 
+    -d '{ \
+        "description":"Ford", \
+        "available":"true", \
+        "price":"15300.00", \
+        "year":"2016" \
+      }' \ 
+    http://localhost:8081/cars
           </code></pre>
 
           <pre><code class="json">
@@ -930,7 +965,14 @@ $> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'descripti
           </p>          
 
           <pre><code class="nohighlight">
-$> curl -X POST  -F 'description=Ford' -F 'year=2016' -F 'price=15000.00' -F 'available=true' http://localhost:8081/cars
+curl -X POST -H 'Content-Type: application/json' \ 
+    -d '{ \
+        "description":"Ford", \
+        "available":"true", \
+        "price":"15300.00", \
+        "year":"2016" \
+      }' \ 
+    http://localhost:8081/cars
           </code></pre>
 
           <pre><code class="json">
@@ -949,7 +991,15 @@ $> curl -X POST  -F 'description=Ford' -F 'year=2016' -F 'price=15000.00' -F 'av
           </p>          
 
           <pre><code class="nohighlight">
-$> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'description=Ford' -F 'year=2016' -F 'price=15300.00' -F 'available=true' http://localhost:8081/cars
+curl -X POST -H 'Content-Type: application/json' \ 
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    -d '{ \
+        "description": "Ford", \
+        "available": "true", \
+        "price": "15300.00", \
+        "year": "2016" \
+      }' \
+    http://localhost:8081/cars
           </code></pre>
 
           <pre><code class="json">
@@ -1016,8 +1066,25 @@ $> go run main.go -mode=migration
           </p>
 
           <pre><code class="go">
-newWishlist.UserID, _ = SessionCheck(r.Header.Get("token"))
+wishlistNew.UserID, _ = SessionCheck(r.Header.Get("token"))
           </code></pre>
+          
+          
+          <!-- <p style="text-align:justify">
+            To reinforce it, you can remove from permitted params the <i>UserId</i> element.
+          </p>
+
+          <pre><code class="go">
+...
+
+  type WhishListPermittedParams struct {
+    CarId uint  `json:car_id`
+    // UserId      uint    `json:user_id`
+  }
+
+...
+          </code></pre> -->
+          
           
           <p style="text-align:justify">
             Now let's add this line (above) to right position in the file <i>app/handlers/wishlist_handler.go</i> inside the function <i>WishlistCreate</i>:
@@ -1025,16 +1092,20 @@ newWishlist.UserID, _ = SessionCheck(r.Header.Get("token"))
 
           <pre><code class="go">
 func WishlistCreate(w http.ResponseWriter, r *http.Request) {
-  var newWishlist = entities.Wishlist{}
+  var wishlistNew = entities.Wishlist{}
 
   log.Info.Println("Handler: WishlistCreate")
   w.Header().Set("Content-Type", "application/json")
 
-  wishlistSetParams(&newWishlist, r)
-  // Add this line (below) at this position
-  newWishlist.UserID, _ = SessionCheck(r.Header.Get("token"))
 
-  valid, errs := wishlist.Create(&newWishlist)
+  var whishListParams WhishListPermittedParams
+  _ = json.NewDecoder(r.Body).Decode(&whishListParams)
+  handler.SetPermittedParamsToEntity(&whishListParams, &wishlistNew)
+
+  // Add this line (below) at this position
+  wishlistNew.UserID, _ = SessionCheck(r.Header.Get("token"))
+
+  valid, errs := wishlist.Create(&wishlistNew)
 
   if valid {
     json.NewEncoder(w).Encode(wishlist.SuccessfullySavedJson{SystemMessage: view.SetSystemMessage("notice", "wishlist was successfully created"), Wishlist: wishlist.SetJson(newWishlist)})
@@ -1048,15 +1119,13 @@ func WishlistCreate(w http.ResponseWriter, r *http.Request) {
             Make sure you have a valid <i>token</i>, a valid <i>car_id</i> and execute this request:
           </p>
 
-          <div class="alert alert-primary" role="alert">
-            <p><b>Quick tip!</b></p>
-            <p style="text-align:justify">
-              If the <i>token</i> gets expired or you lost it, nevermind. Just <i>sign in</i> again and use the new <i>token</i>.
-            </p>
-          </div>
-
           <pre><code class="nohighlight">
-$> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'car_id=8' http://localhost:8081/wishlist
+curl -X POST -H 'Content-Type: application/json' \ 
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \ 
+    -d '{ \
+        "car_id": "8" \
+      }' \
+    http://localhost:8081/wishlist
           </code></pre>
 
           <p style="text-align:justify">
@@ -1079,13 +1148,24 @@ $> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'car_id=8'
 }
           </code></pre>
           
+          <div class="alert alert-primary" role="alert">
+            <p><b>Quick tip!</b></p>
+            <p style="text-align:justify">
+              If the <i>token</i> gets expired or you lost it, nevermind. Just <i>sign in</i> again and use the new <i>token</i>.
+            </p>
+          </div>
 
           <p style="text-align:justify">
             One more:
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X POST -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'car_id=5' http://localhost:8081/wishlist
+curl -X POST -H 'Content-Type: application/json' \ 
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \ 
+    -d '{ \
+        "car_id":"5" \
+      }' \
+    http://localhost:8081/wishlist
           </code></pre>
 
           <p style="text-align:justify">
@@ -1183,7 +1263,8 @@ func WishlistList(w http.ResponseWriter, r *http.Request) {
           </p>
           
           <pre><code class="nohighlight">
-$> curl -X GET -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://localhost:8081/wishlist
+curl -X GET -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/wishlist
           </code></pre>
 
           <p style="text-align:justify">
@@ -1272,7 +1353,8 @@ func SetJson(wishlist entities.Wishlist) Json {
           </p>
           
           <pre><code class="nohighlight">
-$> curl -X GET -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://localhost:8081/wishlist
+curl -X GET -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/wishlist
           </code></pre>
 
           <p style="text-align:justify">
@@ -1376,7 +1458,8 @@ func WishlistShow(w http.ResponseWriter, r *http.Request) {
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X GET -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://localhost:8081/wishlist/2
+curl -X GET -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/wishlist/2
           </code></pre>
 
           <p style="text-align:justify">
@@ -1426,7 +1509,12 @@ func WishlistUpdate(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  wishlistSetParams(&wishlistCurrent, r)
+  var wishlistParams WishlistPermittedParams
+  _ = json.NewDecoder(r.Body).Decode(&wishlistParams)
+  handler.SetPermittedParamsToEntity(&wishlistParams, &wishlistCurrent)
+  
+  // Add this line (below) for avoiding change the wish list user
+  wishlistCurrent.UserId = UserID
 
   if valid, errs := wishlist.Update(&wishlistCurrent); valid {
     json.NewEncoder(w).Encode(wishlist.SuccessfullySavedJson{SystemMessage: view.SetSystemMessage("notice", "wishlist was successfully updated"), Wishlist: wishlist.SetJson(wishlistCurrent)})
@@ -1441,7 +1529,12 @@ func WishlistUpdate(w http.ResponseWriter, r *http.Request) {
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X PUT -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' -F 'car_id=7' http://localhost:8081/wishlist/2
+curl -X PUT -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    -d '{ \
+        "car_id": "7" \
+      }' \
+    http://localhost:8081/wishlist/2
           </code></pre>
 
           <p style="text-align:justify">
@@ -1504,7 +1597,8 @@ func WishlistDestroy(w http.ResponseWriter, r *http.Request) {
           </p>
 
           <pre><code class="nohighlight">
-$> curl -X DELETE -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://localhost:8081/wishlist/2
+curl -X DELETE -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/wishlist/2
           </code></pre>
 
           <p style="text-align:justify">
@@ -1530,23 +1624,24 @@ $> curl -X DELETE -H 'token:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' http://loca
 
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153871878-1"></script>
     <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='https://www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-XXXXX-X');ga('send','pageview');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-153871878-1');
     </script>
     <!-- build:js scripts/vendor.js -->
     <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/node_modules/popper.js/dist/umd/popper.js"></script>
     <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/node_modules/highlightjs/highlight.pack.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
     <!-- endbuild -->
     <!-- build:js scripts/main.js -->
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

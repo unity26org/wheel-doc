@@ -10,13 +10,10 @@
     <!-- Place favicon.ico in the root directory -->
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
+    <link rel="stylesheet" href="/node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-    <!-- build:js scripts/modernizr.js -->
-    <!-- <script src="scripts/modernizr.js"></script> -->
     <!-- endbuild -->
   </head>
   <body>
@@ -822,24 +819,28 @@ $> curl -X GET http://localhost:8081/people?order=birth_day%20DESC
       </div>
     </div>
 
+    <!-- build:js scripts/modernizr.js -->
+    <script src="scripts/modernizr.js"></script>
+    <!-- endbuild -->
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153871878-1"></script>
     <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='https://www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-XXXXX-X');ga('send','pageview');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-153871878-1');
     </script>
     <!-- build:js scripts/vendor.js -->
     <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/node_modules/popper.js/dist/umd/popper.js"></script>
     <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/node_modules/highlightjs/highlight.pack.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
     <!-- endbuild -->
     <!-- build:js scripts/main.js -->
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

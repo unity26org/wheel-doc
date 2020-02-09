@@ -10,13 +10,10 @@
     <!-- Place favicon.ico in the root directory -->
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
+    <link rel="stylesheet" href="/node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-    <!-- build:js scripts/modernizr.js -->
-    <!-- <script src="scripts/modernizr.js"></script> -->
     <!-- endbuild -->
   </head>
   <body>
@@ -164,7 +161,7 @@
               </tr>
               <tr>
                 <td>password</td>
-                <td>!Secret.123!</td>
+                <td>Secret123!</td>
               </tr>
             </tbody>
           </table>
@@ -193,44 +190,52 @@
 
               <p><span class="badge badge-primary">POST</span> <b>/sessions/sign_up</b></p>
 
+Payload:
+          <pre><code class="nohighlight">
+curl -X POST -H 'Content-Type: application/json' \
+    -d '{ \
+        "name": "Your Name", \
+        "email":"your.email@example.com", \ 
+        "password":"Secret123!", \
+        "locale":"en" \
+      }' \
+    http://localhost:8081/sessions/sign_up
+          </code></pre>
+
+              Parameters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
-                    <th>Mandatory</th>
+                    <th>Required</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
                     <td>name</td>
                     <td>New user's name</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>email</td>
                     <td>New user's email</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>password</td>
                     <td>New user's password</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>locale</td>
                     <td>New user's locale. Available locales are "pt-BR" and "en"</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -289,30 +294,38 @@
 
               <p><span class="badge badge-primary">POST</span> <b>/sessions/sign_in</b></p>
 
+              Payload:
+          <pre><code class="nohighlight">
+curl -X POST -H 'Content-Type: application/json' \
+    -d '{ \
+        "email":"your.email@example.com", \ 
+        "password":"Secret123!", \
+      }' \
+    http://localhost:8081/sessions/sign_in
+          </code></pre>
+
+              Parameters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
-                    <th>Mandatory</th>
+                    <th>Required</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
                     <td>email</td>
                     <td>User's email</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>password</td>
                     <td>User's password</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -352,29 +365,14 @@
             <div class="card-body">
               <p>Sign out for signed in users.</p>
 
-
               <p><span class="badge badge-danger">DELETE</span> <b>/sessions/sign_out</b></p>
 
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>HTTP</th>
-                    <th>Type</th>
-                    <th>Mandatory</th>
-                  </tr>              
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                </tbody>
-              </table>
+Payload:
+          <pre><code class="nohighlight">
+curl -X DELETE -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/sessions/sign_out
+          </code></pre>
           
               On success:
               <pre><code class="json">
@@ -413,23 +411,33 @@
               
               <p><span class="badge badge-primary">POST</span> <b>/sessions/password</b></p>
 
+              Payload:
+          <pre><code class="nohighlight">
+curl -X POST -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    -d '{ \
+        "email":"your.email@example.com" \ 
+      }' \
+    http://localhost:8081/sessions/password
+          </code></pre>
+
+
+              Parameters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
-                    <th>Mandatory</th>
+                    <th>Required</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
                     <td>email</td>
                     <td>User's email</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -464,35 +472,43 @@
 
               <p><span class="badge badge-warning">PUT</span> <b>/sessions/password</b></p>
 
+Payload:
+          <pre><code class="nohighlight">
+curl -X PUT -H 'Content-Type: application/json' \
+    -d '{ \
+        "token": "jksdfn983489jd9832mksd09", \
+        "new_password":"Secret.456", \ 
+        "password_confirmation":"Secret.456" \
+      }' \
+    http://localhost:8081/sessions/password
+          </code></pre>
+
+Parameters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
-                    <th>Mandatory</th>
+                    <th>Required</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
                     <td>token</td>
                     <td>Recovery passoword token</td>
-                    <td>Body</td>
                     <td>String</td>
                     <td><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>new_password</td>
                     <td>New password</td>
-                    <td>Body</td>
                     <td>String</td>
                     <td><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>password_confirmation</td>
                     <td>Password confirmation</td>
-                    <td>Body</td>
                     <td>String</td>
                     <td><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
@@ -542,25 +558,31 @@
             <div class="card-body">
               <p>Refreshes the session. Returns a new JWT-based <i>token</i> and a new expiration time in seconds.</p>
 
-              <p><span class="badge badge-primary">POST</span> <b>/sessions/sign_refresh</b></p>
+              <p><span class="badge badge-primary">POST</span> <b>/sessions/refresh</b></p>
 
+Payload:
+          <pre><code class="nohighlight">
+curl -X POST -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/sessions/refresh
+          </code></pre>
+
+Parameters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
-                    <th>Mandatory</th>
+                    <th>Required</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
                     <td>token</td>
                     <td>Session token</td>
-                    <td>Header</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -610,27 +632,13 @@
 
               <p><span class="badge badge-success">GET</span> <b>/myself</b></p>
 
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>HTTP</th>
-                    <th>Type</th>
-                    <th>Mandatory</th>
-                  </tr>              
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                </tbody>
-              </table>
-          
+Payload:
+          <pre><code class="nohighlight">
+curl -X GET -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/myself
+          </code></pre>
+
               On success:
               <pre><code class="json">
 {
@@ -667,44 +675,46 @@
 
               <p><span class="badge badge-warning">PUT</span> <b>/myself</b></p>
 
+Payload:
+          <pre><code class="nohighlight">
+curl -X PUT -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    -d '{ \
+        "name" : 'My New Name', \
+        "email" : 'my.new.email@example.com', \
+        "locale" : 'en' \
+      }'
+    http://localhost:8081/myself
+          </code></pre>
+
+Parameters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
-                    <th>Mandatory</th>
+                    <th>Required</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
+                    <td>name</td>
+                    <td>New user's name</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-danger">No</span></td>
                   </tr>
                   <tr>
                     <td>email</td>
                     <td>New user's email</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-danger">No</span></td>
-                  </tr>
-                  <tr>
-                    <td>name</td>
-                    <td>New user's name</td>
-                    <td>Body</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-danger">No</span></td>
                   </tr>
                   <tr>
                     <td>locale</td>
                     <td>New user's locale. Available locales are "pt-BR" and "en"</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-danger">No</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -758,37 +768,39 @@
 
               <p><span class="badge badge-warning">PUT</span> <b>/myself/password</b></p>
 
+Payload:
+          <pre><code class="nohighlight">
+curl -X PUT -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    -d '{ \
+        "new_password":"Secret.789", \ 
+        "password_confirmation":"Secret.789" \
+      }' \
+    http://localhost:8081/myself/password
+          </code></pre>
+
+Parameters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
-                    <th>Mandatory</th>
+                    <th>Required</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                  <tr>
                     <td>new_password</td>
                     <td>New password</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>password_confirmation</td>
                     <td>Password confirmation</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
 
                 </tbody>
@@ -839,26 +851,12 @@
 
               <p><span class="badge badge-danger">DELETE</span> <b>/myself</b></p>
 
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>HTTP</th>
-                    <th>Type</th>
-                    <th>Mandatory</th>
-                  </tr>              
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                </tbody>
-              </table>
+Payload:
+          <pre><code class="nohighlight">
+curl -X DELETE -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/myself
+          </code></pre>
           
               On success:
               <pre><code class="json">
@@ -900,58 +898,60 @@
 
               <p><span class="badge badge-primary">POST</span> <b>/users</b></p>
 
+              Payload:
+          <pre><code class="nohighlight">
+curl -X POST -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    -d '{ \
+        "name": "New User Name", \
+        "email":"new.user.email@example.com", \ 
+        "password":"Secret.001", \ 
+        "admin":"false", \
+        "locale":"en" \
+      }' \
+    http://localhost:8081/users
+          </code></pre>
+
+              Parameters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
                     <th>Mandatory</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                  <tr>
                     <td>name</td>
                     <td>User's name</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>email</td>
                     <td>User's email</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>password</td>
                     <td>User's password</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>admin</td>
                     <td>"true" for admin users and "false" for non admin users. Default is "false".</td>
-                    <td>Body</td>
                     <td>Boolean</td>
-                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-danger">No</span></td>
                   </tr>
                   <tr>
                     <td>locale</td>
                     <td>User's locale. Available locales are "en" or "pt-BR"</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -964,12 +964,11 @@
         "content": "user was successfully created"
     },
     "user": {
-        "id": "user's ID",
-        "name": "user's name",
-        "email": "user's email",
-        "password": "user's password",
-        "admin": true or false,
-        "locale": "user's locale",
+        "id": "user's id",
+        "name": "New User Name",
+        "email": "new.user.email@example.com",
+        "admin": false,
+        "locale": "en",
         "created_at": "2019-08-26T23:30:26.820820046Z",
         "updated_at": "2019-08-26T23:30:26.820820046Z"
     }
@@ -1016,51 +1015,47 @@
 
               <p><span class="badge badge-success">GET</span> <b>/users</b></p>
 
+              Payload:
+          <pre><code class="nohighlight">
+curl -X GET -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/users
+          </code></pre>
+
+              Paramenters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
-                    <th>Mandatory</th>
+                    <th>Required</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                  <tr>
                     <td>page</td>
                     <td>Page number. Default is 1</td>
-                    <td>Body</td>
                     <td>Integer</td>
-                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-danger">No</span></td>
                   </tr>
                   <tr>
                     <td>per_page</td>
                     <td>Entries per page. Default is 20</td>
-                    <td>Body</td>
                     <td>Integer</td>
-                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-danger">No</span></td>
                   </tr>
                   <tr>
                     <td>order</td>
                     <td>List ordering</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-danger">No</span></td>
                   </tr>
                   <tr>
                     <td>search[...]</td>
                     <td>Example: use <i>search[name_cont]=a</i> to search users whose contain "a" in their name. More than one parameter <i>search</i> is allowed. To learn more about it, check the <a href="/features.html#search-engine">search engine</a> section.</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-danger">No</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -1093,26 +1088,12 @@
 
               <p><span class="badge badge-success">GET</span> <b>/users/{id}</b></p>
 
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>HTTP</th>
-                    <th>Type</th>
-                    <th>Mandatory</th>
-                  </tr>              
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                </tbody>
-              </table>
+              Payload:
+          <pre><code class="nohighlight">
+curl -X GET -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081/users/1
+          </code></pre>
           
               On success:
               <pre><code class="json">
@@ -1152,58 +1133,53 @@
 
               <p><span class="badge badge-warning">PUT</span> <b>/users/{id}</b></p>
 
+              Payload:
+          <pre><code class="nohighlight">
+curl -X PUT -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    -d '{ \
+        "name": "User Name", \
+        "email": "user.email@example.com", \ 
+        "admin": "false", \
+        "locale": "en" \
+      }' \
+    http://localhost:8081/users/1
+          </code></pre>
+
+              Parameters:
               <table class="table">
                 <thead>
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>HTTP</th>
                     <th>Type</th>
                     <th>Mandatory</th>
                   </tr>              
                 </thead>
                 <tbody>
                   <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                  <tr>
                     <td>name</td>
                     <td>User's name</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>email</td>
                     <td>User's email</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                  <tr>
-                    <td>password</td>
-                    <td>User's password</td>
-                    <td>Body</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                   <tr>
                     <td>admin</td>
                     <td>"true" for admin users and "false" for non admin users. Default is "false".</td>
-                    <td>Body</td>
                     <td>Boolean</td>
-                    <td><span class="badge badge-pill badge-danger">No</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-danger">No</span></td>
                   </tr>
                   <tr>
                     <td>locale</td>
                     <td>User's locale. Available locales are "en" or "pt-BR"</td>
-                    <td>Body</td>
                     <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -1219,7 +1195,6 @@
         "id": "user's ID",
         "name": "user's name",
         "email": "user's email",
-        "password": "user's password",
         "admin": true or false,
         "locale": "user's locale",
         "created_at": "2019-08-26T23:30:26.820820046Z",
@@ -1261,6 +1236,95 @@
           
           <div class="card" id="sessions-sign-out">
             <div class="card-header">
+              Update Password
+            </div>
+            <div class="card-body">
+              <p>Updates one single user's password, per once, identified by an <i>id</i>.</p>
+
+              <p><span class="badge badge-warning">PUT</span> <b>/users/{id}/password</b></p>
+
+              Payload:
+          <pre><code class="nohighlight">
+curl -X PUT -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    -d '{ \
+        "password": "User Name" \
+      }' \
+    http://localhost:8081/users/1/password
+          </code></pre>
+
+              Parameters:
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Mandatory</th>
+                  </tr>              
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>password</td>
+                    <td>User's password</td>
+                    <td>String</td>
+                    <td class="text-center"><span class="badge badge-pill badge-success">Yes</span></td>
+                  </tr>
+                </tbody>
+              </table>
+          
+              On success:
+              <pre><code class="json">
+{
+    "system_message": {
+        "type": "notice",
+        "content": "user password was successfully updated"
+    },
+    "user": {
+        "id": "user's ID",
+        "name": "user's name",
+        "email": "user's email",
+        "admin": true or false,
+        "locale": "user's locale",
+        "created_at": "2019-08-26T23:30:26.820820046Z",
+        "updated_at": "2019-08-26T23:30:26.820820046Z"
+    }
+}
+              </code></pre>
+
+              On error:          
+              <pre><code class="json">
+{
+    "system_message": {
+        "type": "alert",
+        "content": "user password was not updated"
+    },
+    "errors": [
+    ...
+    ]
+}
+              </code></pre>
+
+              Available errors are:
+              
+              <ul>
+                <li>name can't be blank</li>
+                <li>name is too long</li>
+                <li>email can't be blank</li>
+                <li>email is too long</li>
+                <li>email is invalid</li>
+                <li>email has already been taken</li>
+                <li>password is too short minimum is 8 characters</li>
+                <li>locale is invalid</li>
+              </ul>
+              
+            </div>
+          </div>
+
+          <p></p>
+          
+          <div class="card" id="sessions-sign-out">
+            <div class="card-header">
               Destroy
             </div>
             <div class="card-body">
@@ -1268,26 +1332,12 @@
 
               <p><span class="badge badge-danger">DELETE</span> <b>/users/{id}</b></p>
 
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>HTTP</th>
-                    <th>Type</th>
-                    <th>Mandatory</th>
-                  </tr>              
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>token</td>
-                    <td>Session token</td>
-                    <td>Header</td>
-                    <td>String</td>
-                    <td><span class="badge badge-pill badge-success">Yes</span></td>
-                  </tr>
-                </tbody>
-              </table>
+Payload:
+          <pre><code class="nohighlight">
+curl -X DELETE -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+    http://localhost:8081//users/1
+          </code></pre>
           
               On success:
               <pre><code class="json">
@@ -1320,24 +1370,28 @@
       </div>
 
     </div>
+    <!-- build:js scripts/modernizr.js -->
+    <script src="scripts/modernizr.js"></script>
+    <!-- endbuild -->
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153871878-1"></script>
     <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='https://www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-XXXXX-X');ga('send','pageview');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-153871878-1');
     </script>
     <!-- build:js scripts/vendor.js -->
     <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/node_modules/popper.js/dist/umd/popper.js"></script>
     <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/node_modules/highlightjs/highlight.pack.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
     <!-- endbuild -->
     <!-- build:js scripts/main.js -->
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

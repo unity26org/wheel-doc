@@ -10,13 +10,10 @@
     <!-- Place favicon.ico in the root directory -->
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
+    <link rel="stylesheet" href="/node_modules/highlightjs/styles/mono-blue.css" type="text/css" />
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-    <!-- build:js scripts/modernizr.js -->
-    <!-- <script src="scripts/modernizr.js"></script> -->
     <!-- endbuild -->
   </head>
   <body>
@@ -608,6 +605,81 @@ http://localhost:8081/people?search[name_cont]=A&search[age_gt]=21
 map[string]string{ "name_cont" : "A", "age_gt" : "21" }
           </code></pre>
 
+
+          <h5 class="resource-title">func SetPermittedParamsToEntity</h5>
+          <pre><code class="go">
+func SetPermittedParamsToEntity(params interface{}, entity interface{})
+          </code></pre>
+
+          <p style="text-align:justify">
+            Sets data to an Entity struct from a Permitted Params struct to avoid <a href="https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html" target="_blank">Mass Assignment</a> vulnerability.
+          </p>
+
+
+          <pre><code class="go">
+....
+
+type UserPermittedParams struct {
+  Name     string `json:"name"`
+  Email    string `json:"email"`
+  Password string `json:"password"`
+  Locale   string `json:"locale"`
+  Admin    bool   `json:"admin"`
+}
+
+func UserCreate(w http.ResponseWriter, r *http.Request) {
+  var newUser = entities.User{}
+
+  log.Info.Println("Handler: UserCreate")
+  w.Header().Set("Content-Type", "application/json")
+
+  var userParams UserPermittedParams
+  _ = json.NewDecoder(r.Body).Decode(&userParams)
+
+  handler.SetPermittedParamsToEntity(&userParams, &newUser)
+
+  valid, errs := user.Create(&newUser)
+
+  if valid {
+    json.NewEncoder(w).Encode(user.SuccessfullySavedJson{SystemMessage: view.SetSystemMessage("notice", "user was successfully created"), User: user.SetJson(newUser)})
+  } else {
+    json.NewEncoder(w).Encode(view.SetErrorMessage("alert", "user was not created", errs))
+  }
+}
+
+....
+          </code></pre>
+
+
+          <h5 class="resource-title">func SetPermittedParamsToEntityWithExceptions</h5>
+          <pre><code class="go">
+func SetPermittedParamsToEntityWithExceptions(params interface{}, entity interface{}, excepts []string)
+          </code></pre>
+
+          <p style="text-align:justify">
+            It does the same as <i>SetPermittedParamsToEntity</i>, but you can set a list of params to remove from permitted list.
+          </p>
+
+          <pre><code class="go">
+paramsExcept := []string{"Password"}
+handler.SetPermittedParamsToEntityWithExceptions(&userParams, &userNew, paramsExcept)
+          </code></pre>
+
+
+          <h5 class="resource-title">func SetPermittedParamsToEntityButOnly</h5>
+          <pre><code class="go">
+func SetPermittedParamsToEntityButOnly(params interface{}, entity interface{}, only []string)
+          </code></pre>
+
+          <p style="text-align:justify">
+            It does the same as <i>SetPermittedParamsToEntity</i>, but you can set a sublist of permitted params.
+          </p>
+
+          <pre><code class="go">
+paramsOnly := []string{"Password"}
+handler.SetPermittedParamsToEntityButOnly(&userParams, &userNew, paramsOnly)
+          </code></pre>
+
           <h3 class="main-header" id="config">5&nbsp;&nbsp;Config</h3>
 
           <h5 class="resource-title">type AppConfig</h5>
@@ -861,24 +933,28 @@ func StringToBoolean(valueContent string) (interface{}, error)
       </div>
 
     </div>
+    <!-- build:js scripts/modernizr.js -->
+    <script src="scripts/modernizr.js"></script>
+    <!-- endbuild -->
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153871878-1"></script>
     <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='https://www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-XXXXX-X');ga('send','pageview');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-153871878-1');
     </script>
     <!-- build:js scripts/vendor.js -->
     <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/node_modules/popper.js/dist/umd/popper.js"></script>
     <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/node_modules/highlightjs/highlight.pack.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
     <!-- endbuild -->
     <!-- build:js scripts/main.js -->
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>
